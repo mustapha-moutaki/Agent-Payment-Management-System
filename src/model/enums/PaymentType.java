@@ -1,4 +1,5 @@
 package model.enums;
 
-public class PaymentType {
+public enum PaymentType {
+    SALARY, PRIME, BONUS, INDEMNITE
 }

@@ -1,4 +1,5 @@
 package model.enums;
 
-public class AgentType {
+public enum AgentType {
+    OUVRIER, RESPONSABLE_DEPARTEMENT, STAGIAIRE
 }
