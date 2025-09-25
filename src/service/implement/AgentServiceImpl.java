@@ -23,7 +23,7 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public void deleteAgent(int id) {
-        agentDAO.
+        agentDAO.deleteAgent(id);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public List<Agent> getAllAgents() {
-        agentDAO.findAll();
+        return agentDAO.findAll();
     }
 
     @Override
     public Agent getAgentById(int id) {
-        agentDAO.findById(id);
+        return agentDAO.findById(id);
     }
 }

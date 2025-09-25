@@ -14,16 +14,16 @@ public class Main {
         // 1- we make connection with database
         Connection conn = DBConnection.getConnection();
 
-//        AgentDAO agenDao = new AgentDAOImpl(conn);
-//        Agent newAgent = new Agent("ahmen", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 0);
-//        agenDao.saveAgent(newAgent);
-//        System.out.println("agent created successfully");
+        AgentDAO agenDao = new AgentDAOImpl(conn);
+        Agent newAgent = new Agent("hello", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 0);
+        agenDao.saveAgent(newAgent);
+        System.out.println("agent created successfully");
 
 
 
-            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
-            Department depar1 = new Department("it", 1);
-            deparDAO.saveDepartment(depar1);
+//            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
+//            Department depar1 = new Department("it", 1);
+//            deparDAO.saveDepartment(depar1);
 
     }
 }
