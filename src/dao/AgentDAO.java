@@ -7,6 +7,7 @@ import java.util.List;
 public interface AgentDAO {
      void saveAgent(Agent agent);
      void updateAgent(Agent agent);
+     void deleteAgent(int id);
      List<Agent> findAll();
      Agent findById(int id);
 }
