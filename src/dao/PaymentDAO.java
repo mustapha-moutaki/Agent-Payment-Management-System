@@ -9,4 +9,5 @@ public interface PaymentDAO {
      void updatePayment(Payment payment);
      Payment findByid(int id);
      List<Payment> findAll();
+     void deletePayment(int id);
 }

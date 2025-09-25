@@ -12,7 +12,6 @@ public class PaymentDAOImpl implements PaymentDAO {
 
     private Connection connection;
 
-
     public PaymentDAOImpl(Connection connection) {
         this.connection = connection;
     }
@@ -94,5 +93,16 @@ public class PaymentDAOImpl implements PaymentDAO {
         }
 
         return payments;
+    }
+
+    @Override
+    public void deletePayment(int id) {
+        String sql = "DELETE FROM payment WHERE payment_id = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
