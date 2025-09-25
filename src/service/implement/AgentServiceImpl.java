@@ -11,7 +11,7 @@ import java.util.List;
 public class AgentServiceImpl implements AgentService {
     private AgentDAO agentDAO;
 
-    public AgentServiceImpl(Connection connection){
+        public AgentServiceImpl(Connection connection){
         this.agentDAO = new AgentDAOImpl(connection);
     }
 

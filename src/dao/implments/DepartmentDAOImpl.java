@@ -52,6 +52,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 return new Department(
+                        rs.getInt("id_department"),
                         rs.getString("name"),
                         rs.getInt("id_manager")
                 );
@@ -70,7 +71,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         ResultSet rs = stmt.executeQuery();
         while (rs.next()){
             Department department = new Department(
-//                    rs.getInt("id_department"),
+                    rs.getInt("id_department"),
                     rs.getString("name"),
                     rs.getInt("id_manager")
             );
@@ -80,5 +81,16 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             e.printStackTrace();;
         }
         return departments;
+    }
+
+    @Override
+    public void deleteDepartment(int id) {
+        String sql = "DELETE FROM department WHERE id_department = ?";
+        try(PreparedStatement stmt = connection.prepareStatement(sql)){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }

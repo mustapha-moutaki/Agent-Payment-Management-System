@@ -4,8 +4,9 @@ public class Department {
     private int id;
     private String name;
     private int id_manager; // fk
-
-    public Department(String name, int id_manager){
+    private int id_department;
+    public Department(int id_department, String name, int id_manager){
+        this.id_department = id_department;
         this.name =  name;
         this.id_manager = id_manager;
     }
@@ -32,5 +33,23 @@ public class Department {
 
     public void setId_manager(int id_manager) {
         this.id_manager = id_manager;
+    }
+
+    public int getId_department() {
+        return id_department;
+    }
+
+    public void setId_department(int id_department) {
+        this.id_department = id_department;
+    }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", id_manager=" + id_manager +
+                ", id_department=" + id_department +
+                '}';
     }
 }

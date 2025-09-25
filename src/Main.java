@@ -15,15 +15,39 @@ public class Main {
         Connection conn = DBConnection.getConnection();
 
         AgentDAO agenDao = new AgentDAOImpl(conn);
-        Agent newAgent = new Agent("hello", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 0);
-        agenDao.saveAgent(newAgent);
-        System.out.println("agent created successfully");
+
+        //-----------Agent creation----------------------
+//        Agent newAgent = new Agent("hello", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 0);
+//        agenDao.saveAgent(newAgent);
+//        System.out.println("agent created successfully");
+
+        //---------------delete------------------------------
+//        agenDao.deleteAgent(3);
+//        System.out.println("agent deleted successfully");
+        //--------------------------------------------------
 
 
+        // -------------find agent by id------------
+//        Agent agentfind= agenDao.findById(1);
+//        System.out.println(agentfind);
+//        System.out.println("the agent find success");
 
+
+// ------------------creating department-------------------
 //            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
 //            Department depar1 = new Department("it", 1);
 //            deparDAO.saveDepartment(depar1);
+
+        DepartmentDAO deparDao = new DepartmentDAOImpl(conn);
+//        Department depar1 = new Department("marketing", 1);// creating department
+//        deparDao.saveDepartment(depar1);
+
+        //System.out.println(deparDao.findAll());// find the all department
+//        Department deparfinded = deparDao.findDepartmentById(2);
+//        System.out.println(deparfinded);// find the department by it\s id
+ //       deparDao.deleteDepartment(2);// delete the department
+
+
 
     }
 }
