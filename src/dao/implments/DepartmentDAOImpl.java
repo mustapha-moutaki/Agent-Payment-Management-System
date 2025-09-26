@@ -22,10 +22,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public void saveDepartment(Department department) {
-        String sql = "INSERT INTO department (name, id_manager)VALUES (?, ?)";
+        String sql = "INSERT INTO department (name)VALUES (?)";
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1, department.getName());
-            stmt.setInt(2, department.getId_manager());
+//            stmt.setInt(2, department.getId_manager());
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,10 +34,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public void updateDepattment(Department department) {
-        String sql = "UPDATE department SET name = ?, agent_id = ? WHERE department_id = ?";
+        String sql = "UPDATE department SET name = ? WHERE department_id = ?";
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1,department.getName());
-            stmt.setInt(2,department.getId_manager());
+//            stmt.setInt(2,department.getId_manager());
             stmt.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -53,8 +53,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             if(rs.next()){
                 return new Department(
                         rs.getInt("id_department"),
-                        rs.getString("name"),
-                        rs.getInt("id_manager")
+                        rs.getString("name")
+//                        rs.getInt("id_manager")
                 );
             }
         }catch(SQLException e){
@@ -72,8 +72,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
         while (rs.next()){
             Department department = new Department(
                     rs.getInt("id_department"),
-                    rs.getString("name"),
-                    rs.getInt("id_manager")
+                    rs.getString("name")
+//                    rs.getInt("id_manager")
             );
             departments.add(department);
         }

@@ -20,6 +20,7 @@ public class PaymentDAOImpl implements PaymentDAO {
     @Override
     public void savePayment(Payment payment) {
         String sql = "INSERT INTO payment(payment_type, amount, payment_date, condition_validated, id_agent) VALUES (?, ?, ?, ?, ?)";
+        System.out.println("it's saving");
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, payment.getType().name());
             stmt.setDouble(2, payment.getAmount());

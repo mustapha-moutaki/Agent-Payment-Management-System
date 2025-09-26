@@ -12,7 +12,7 @@ public class Payment {
     private boolean condition_validated = false;
     private int agentId; //fk
 
-    public Payment(int id, PaymentType type, double amount, LocalDate date, boolean condition_validated, int agentId) {
+    public Payment(int id,PaymentType type, double amount, LocalDate date, boolean condition_validated, int agentId) {
         this.id = id;
         this.type = type;
         this.amount = amount;

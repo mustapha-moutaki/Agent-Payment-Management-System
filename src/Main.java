@@ -1,13 +1,18 @@
 import dao.AgentDAO;
 import dao.DBConnection;
 import dao.DepartmentDAO;
+import dao.PaymentDAO;
 import dao.implments.AgentDAOImpl;
 import dao.implments.DepartmentDAOImpl;
+import dao.implments.PaymentDAOImpl;
 import model.Agent;
 import model.Department;
+import model.Payment;
 import model.enums.AgentType;
+import model.enums.PaymentType;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,9 +22,9 @@ public class Main {
         AgentDAO agenDao = new AgentDAOImpl(conn);
 
         //-----------Agent creation----------------------
-//        Agent newAgent = new Agent("hello", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 0);
-//        agenDao.saveAgent(newAgent);
-//        System.out.println("agent created successfully");
+        Agent newAgent = new Agent("test fk", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 1);
+        agenDao.saveAgent(newAgent);
+        System.out.println("agent created successfully");
 
         //---------------delete------------------------------
 //        agenDao.deleteAgent(3);
@@ -34,8 +39,8 @@ public class Main {
 
 
 // ------------------creating department-------------------
-//            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
-//            Department depar1 = new Department("it", 1);
+            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
+//            Department depar1 = new Department(1, "it");
 //            deparDAO.saveDepartment(depar1);
 
         DepartmentDAO deparDao = new DepartmentDAOImpl(conn);
@@ -47,8 +52,9 @@ public class Main {
 //        System.out.println(deparfinded);// find the department by it\s id
  //       deparDao.deleteDepartment(2);// delete the department
 
-
-
-
+//        adding payment
+//        PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
+//        Payment payment1= new Payment(1,PaymentType.SALARY, 100, LocalDate.now(), true, 1);
+//        paymentDAO.savePayment(payment1);
     }
 }
