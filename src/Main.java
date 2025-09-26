@@ -1,15 +1,60 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import dao.AgentDAO;
+import dao.DBConnection;
+import dao.DepartmentDAO;
+import dao.PaymentDAO;
+import dao.implments.AgentDAOImpl;
+import dao.implments.DepartmentDAOImpl;
+import dao.implments.PaymentDAOImpl;
+import model.Agent;
+import model.Department;
+import model.Payment;
+import model.enums.AgentType;
+import model.enums.PaymentType;
+
+import java.sql.Connection;
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // 1- we make connection with database
+        Connection conn = DBConnection.getConnection();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        AgentDAO agenDao = new AgentDAOImpl(conn);
+
+        //-----------Agent creation----------------------
+        Agent newAgent = new Agent("test fk", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 1);
+        agenDao.saveAgent(newAgent);
+        System.out.println("agent created successfully");
+
+        //---------------delete------------------------------
+//        agenDao.deleteAgent(3);
+//        System.out.println("agent deleted successfully");
+        //--------------------------------------------------
+
+
+        // -------------find agent by id------------
+//        Agent agentfind= agenDao.findById(1);
+//        System.out.println(agentfind);
+//        System.out.println("the agent find success");
+
+
+// ------------------creating department-------------------
+            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
+//            Department depar1 = new Department(1, "it");
+//            deparDAO.saveDepartment(depar1);
+
+        DepartmentDAO deparDao = new DepartmentDAOImpl(conn);
+//        Department depar1 = new Department("marketing", 1);// creating department
+//        deparDao.saveDepartment(depar1);
+
+        //System.out.println(deparDao.findAll());// find the all department
+//        Department deparfinded = deparDao.findDepartmentById(2);
+//        System.out.println(deparfinded);// find the department by it\s id
+ //       deparDao.deleteDepartment(2);// delete the department
+
+//        adding payment
+//        PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
+//        Payment payment1= new Payment(1,PaymentType.SALARY, 100, LocalDate.now(), true, 1);
+//        paymentDAO.savePayment(payment1);
     }
 }
