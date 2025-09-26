@@ -22,9 +22,9 @@ public class Main {
         AgentDAO agenDao = new AgentDAOImpl(conn);
 
         //-----------Agent creation----------------------
-        Agent newAgent = new Agent("test fk", "mohammed", "ahmendmohammed@gmail.com", "123456", AgentType.OUVRIER, 1);
-        agenDao.saveAgent(newAgent);
-        System.out.println("agent created successfully");
+//        Agent newAgent = new Agent("hello", "worlfd", "ahmendmohammed@gmail.com", "12456", AgentType.OUVRIER, 1);
+//        agenDao.saveAgent(newAgent);
+//        System.out.println("agent created successfully");
 
         //---------------delete------------------------------
 //        agenDao.deleteAgent(3);
@@ -54,7 +54,10 @@ public class Main {
 
 //        adding payment
 //        PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
-//        Payment payment1= new Payment(1,PaymentType.SALARY, 100, LocalDate.now(), true, 1);
+//        Payment payment1= new Payment(1,PaymentType.SALARY, 10, LocalDate.now(), true, 3);
 //        paymentDAO.savePayment(payment1);
+
+        // display all agent deatils
+        System.out.println(agenDao.findAll());
     }
 }

@@ -2,16 +2,22 @@ package model;
 
 import model.enums.AgentType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Agent extends Person{
     private AgentType agent_type;
 //    private double salary;
     private int id_department;
+    private Department department;
+    private List<Payment> paymentsList;// agent payments list to store only payments of single agent
 
     public Agent(String first_name, String last_name, String email, String password, AgentType type, int id_department){
         super(first_name, last_name, email, password);
         this.agent_type = type;
 //        this.salary = salary;
         this.id_department = id_department;
+        this.paymentsList = new ArrayList<>();
     }
 
 
@@ -42,5 +48,33 @@ public class Agent extends Person{
 //        this.salary = salary;
 //    }
 
+    // to set agent department
+    public void setDepartment(Department department){
+        this.department = department;
+    }
+    // get agent department
+    public Department getDepartment(){
+        return this.department;
+    }
 
+
+    // set payment
+    public void addPayment(Payment payment){
+        this.paymentsList.add(payment);
+    }
+
+    // get payment
+    public List<Payment>getPayments(){
+        return paymentsList;
+    }
+
+    @Override
+    public String toString() {
+        return "Agent{" +
+                "agent_type=" + agent_type +
+                ", id_department=" + id_department +
+                ", department=" + department +
+                ", paymentsList=" + paymentsList +
+                '}';
+    }
 }
