@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateUtils {
-    private static final String String DEFAULT_PATTERN = "dd/MM/yyyy";
+    private static final String DEFAULT_PATTERN = "dd/MM/yyyy";
     private static final SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_PATTERN);
 
     public  static String format(Date date){
