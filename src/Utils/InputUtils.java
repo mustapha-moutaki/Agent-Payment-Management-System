@@ -32,3 +32,7 @@ public class InputUtils {
         return value;
     }
 }
+
+/**
+ * usage String readStringforName = InputUtils.readString("enter ur name")
+ */
