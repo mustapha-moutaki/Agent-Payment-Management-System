@@ -1,5 +1,6 @@
 package view;
 
+import Utils.InputUtils;
 import controller.MainController;
 import model.Agent;
 import model.Department;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class AgentUi {
     private MainController controller;
+
 
     public AgentUi(MainController controller){
         this.controller = controller;
