@@ -59,7 +59,7 @@ public class MainController {
 
 
     /**
-     * Department Controller
+     * ================== Department Controller ========================
      */
 
     // 1- Create Department
@@ -89,7 +89,7 @@ public class MainController {
 
 
     /**
-     * Payment Controller
+     * ======================== Payment Controller ===================
      */
 
     // 1- create Payment

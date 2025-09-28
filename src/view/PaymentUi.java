@@ -27,5 +27,7 @@ public class PaymentUi {
             System.out.println("payment name: "+ payment.getCondition_validated());
         }
     }
-
+    public void getPayment(int id){
+        controller.getPayment(id);
+    }
 }
