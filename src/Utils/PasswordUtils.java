@@ -17,6 +17,7 @@ public class PasswordUtils {
         }
     }
 
+    // it gets the password that user typed and get the password hashed in db
     public static boolean verify(String password, String hash){
         return hash(password).equals(hash);
     }

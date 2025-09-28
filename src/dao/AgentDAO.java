@@ -10,4 +10,5 @@ public interface AgentDAO {
      void deleteAgent(int id);
      List<Agent> findAll();
      Agent findById(int id);
+     Agent findByEmail(String email);
 }

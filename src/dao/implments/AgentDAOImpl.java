@@ -206,5 +206,31 @@ public class AgentDAOImpl implements AgentDAO {
         }
     }
 
+    @Override
+    public Agent findByEmail(String email) {
+        String sql = "SELECT * FROM agent WHERE email = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                Agent agent = new Agent(
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        AgentType.valueOf(rs.getString("agent_type")),
+                        rs.getInt("department_id")
+                );
+                return agent;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
 
