@@ -22,6 +22,7 @@ import service.implement.PaymentServiceImpl;
 import view.MainMenu;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -88,6 +89,34 @@ public class Main {
         PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
 
 // Service layer
+//        String password = "123";
+//        String hashedPass = PasswordUtils.hash(password);
+//
+//        Agent manager = new Agent(
+//                "ousama",
+//                "manager",
+//                "ousama@gmail.com",
+//                password, // الأصلية إذا تريد تخزينها، أو استخدم hashedPass
+//                AgentType.RESPONSABLE_DEPARTEMENT,
+//                0
+//        );
+//
+//        String sql = "INSERT INTO agent (first_name, last_name, email, password, agent_type, id_department) VALUES (?, ?, ?, ?, ?, ?)";
+//
+//        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+//            stmt.setString(1, manager.getFirst_name());
+//            stmt.setString(2, manager.getLast_name());
+//            stmt.setString(3, manager.getEmail());
+//            stmt.setString(4, hashedPass); // أو password حسب رغبتك
+//            stmt.setString(5, manager.getAgent_type().name());
+//            stmt.setInt(6, manager.getId_department());
+//
+//            stmt.executeUpdate();
+//            System.out.println("Manager added successfully!");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
         AgentService agentService = new AgentServiceImpl(conn);
         DepartmentService departmentService = new DepartmentServiceImpl(conn);
         PaymentService paymentService = new PaymentServiceImpl(conn);

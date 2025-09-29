@@ -22,28 +22,32 @@ public class DirectorUi {
     public DirectorUi(MainController controller, AuthentificationService authService){
         this.controller = controller;
         this.authService = authService;
+
     }
 
     public void directorMenu(Agent director){
         int choice;
-        System.out.println("\n╔════════════════════════════════════════════════════════╗");
-        System.out.println("║                     Director Menu                       ║");
-        System.out.println("╠════════════════════════════════════════════════════════╣");
-        System.out.println("║ 1️⃣  Create Department                                   ║");// done
-        System.out.println("║ 2️⃣  Update Department                                   ║"); // done
-        System.out.println("║ 3️⃣  Delete Department                                   ║"); // done
-        System.out.println("║ 4️⃣  Assign Manager to Department                        ║"); // done -test
-        System.out.println("║ 5️⃣  Add or Update Agent across Departments              ║"); // not yet
-        System.out.println("║ 6️⃣  View All Departments                                ║"); // done
-        System.out.println("║ 7️⃣  View All Agents                                     ║"); // done
-        System.out.println("║ 8️⃣  View All Payments                                   ║");//  - Filter by Department, Agent, Type, Amount, Date
-        System.out.println("║ 9️⃣  View Company-wide Statistics                        ║");//Total number of Agents and Departments+Payment distribution (Salary / Allowances / Bonus / Compensation+ - Identify agent with highest total payments
-        System.out.println("║ 0️⃣  Logout                                              ║"); // done
-        System.out.println("╚════════════════════════════════════════════════════════╝");
-        choice = InputUtils.readInt("Enter your choice: ");
-        boolean exit = false;
-        while(!exit){
-            do{
+        do {
+
+            System.out.println("\n╔════════════════════════════════════════════════════════╗");
+            System.out.println("║                     Director Menu                       ║");
+            System.out.println("╠════════════════════════════════════════════════════════╣");
+            System.out.println("║ 1️⃣  Create Department                                   ║");// done
+            System.out.println("║ 2️⃣  Update Department                                   ║"); // done
+            System.out.println("║ 3️⃣  Delete Department                                   ║"); // done
+            System.out.println("║ 4️⃣  Assign Manager to Department                        ║"); // done -test->done
+            System.out.println("║ 5️⃣  Add or Update Agent across Departments              ║"); // not yet
+            System.out.println("║ 6️⃣  View All Departments                                ║"); // done with test
+            System.out.println("║ 7️⃣  View All Agents                                     ║"); // done with test
+            System.out.println("║ 8️⃣  View All Payments                                   ║");//  - Filter by Department, Agent, Type, Amount, Date
+            System.out.println("║ 9️⃣  View Company-wide Statistics                        ║");//Total number of Agents and Departments+Payment distribution (Salary / Allowances / Bonus / Compensation+ - Identify agent with highest total payments
+            System.out.println("║ 0️⃣  Logout                                              ║"); // done
+            System.out.println("╚════════════════════════════════════════════════════════╝");
+            choice = InputUtils.readInt("Enter your choice: ");
+
+//        boolean exit = false;
+//        while(!exit){
+//            do{
                 switch (choice){
                     case 1: createDepartment();// done ready for test
                         break;
@@ -68,11 +72,11 @@ public class DirectorUi {
                     default:
                         System.out.println("Invalid choice, try again");
                 }
-            }while (choice != 0);
+             }while (choice != 0);
         }
 
 
-    }
+
 
     // 1- create department
     public void createDepartment(){
@@ -133,7 +137,7 @@ public class DirectorUi {
             if (choice > 0 && choice <= departments.size()) {
                 int chosenDepartment = departments.get(choice - 1).getId_department();
                controller.deleteDepartment(chosenDepartment);
-                System.out.println("Department deleted successfully!");
+                System.out.println("==> Department deleted successfully!");
             } else {
                 System.out.println("Invalid choice!");
             }
@@ -146,12 +150,14 @@ public class DirectorUi {
     // check maincontrollr 5-
     //check department line 8
     public void AddorUpdateAgentacrossDepartments(){
-
+        System.out.println("\n╔════════════════════════════════╗");
+        System.out.println("║         Departments List       ║");
+        System.out.println("╚════════════════════════════════╝");
     }
 
 
     public void assignManagerToDepartment() {
-        List<Agent> agents = agentService.getAllAgents();
+        List<Agent> agents = controller.getAllAgent();
 
         // getting all managers
         List<Agent> managers = agents.stream()
@@ -172,7 +178,7 @@ public class DirectorUi {
         if (choice > 0 && choice <= managers.size()) {
             Agent chosenManager = managers.get(choice - 1);
 
-            List<Department> departments = departmentService.findAll();
+            List<Department> departments = controller.DepartmentList();
             if (departments.isEmpty()) {
                 System.out.println("No departments found ");
                 return;
@@ -194,7 +200,7 @@ public class DirectorUi {
                                 && a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT);
 
                 if (hasManager) {
-                    System.out.println("==>department " + chosenDepartment.getName() + "has aleady manager!");
+                    System.out.println("==>department " + chosenDepartment.getName() + " has aleady manager!");
                     return;
                 }
 
@@ -220,7 +226,7 @@ public class DirectorUi {
          }
 
          for (Department department: departmentList){
-             System.out.println("---> "+department.getName());
+             System.out.println("---> |"+department.getName());
          }
          System.out.println("══════════════End═════════════════");
 
@@ -237,12 +243,12 @@ public class DirectorUi {
         }
 
         for (Agent agent: agentsList){
-            System.out.println("---");
-            System.out.println("---> "+agent.getFirst_name());
-            System.out.println("---> "+agent.getLast_name());
-            System.out.println("---> "+agent.getAgent_type().name());
-            System.out.println("---");
+            System.out.println("-----------------------------");
+            System.out.println("- First Name: "+agent.getFirst_name());
+            System.out.println("- Last Name: "+agent.getLast_name());
+            System.out.println("- Type: "+agent.getAgent_type().name());
         }
+        System.out.println("--------------------");
         System.out.println("══════════════End═════════════════");
     }
 
@@ -255,15 +261,15 @@ public class DirectorUi {
         if(paymentList.isEmpty()){
             System.out.println("No payments available ");
         }
-
+        System.out.println("----------------------------------");
         for (Payment payment: paymentList){
-            System.out.println("---");
-            System.out.println("---> "+payment.getType());
-            System.out.println("---> "+payment.getAmount());
-            System.out.println("---> "+payment.getDate());
-            System.out.println("---> "+payment.getAgentId());
-            System.out.println("---> "+payment.getCondition_validated());
-            System.out.println("---");
+
+            System.out.println("- Payment type: "+payment.getType());
+            System.out.println("- Payment Amount: "+payment.getAmount());
+            System.out.println("- Date:  "+payment.getDate());
+            System.out.println("- AgentId: "+payment.getAgentId());
+            System.out.println("- IsValid:  "+payment.getCondition_validated());
+            System.out.println("---        +          ---");
         }
         System.out.println("══════════════End═════════════════");
     }
