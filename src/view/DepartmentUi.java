@@ -26,6 +26,6 @@ public class DepartmentUi {
         System.out.println("+++++++++++++++++++++++++++++++++++++");
     }
     public void getDepartmentById(int id){
-        controller.getDepartmentByid(id);
+        controller.getDepartmentById(id);
     }
 }

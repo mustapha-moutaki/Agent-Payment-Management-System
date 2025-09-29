@@ -33,7 +33,9 @@ public class AgentDAOImpl implements AgentDAO {
             stmt.setString(3, agent.getEmail());
             stmt.setString(4, agent.getPassword());
             stmt.setString(5, agent.getAgent_type().name());
-            stmt.setInt(6, agent.getId_department());
+//            stmt.setInt(6, agent.getId_department());
+            stmt.setInt(6, agent.getDepartment() != null ? agent.getDepartment().getId_department() : 0);
+
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +51,9 @@ public class AgentDAOImpl implements AgentDAO {
             stmt.setString(3, agent.getEmail());
             stmt.setString(4, agent.getPassword());
             stmt.setString(5, agent.getAgent_type().name());
-            stmt.setInt(6, agent.getId_department());
+//            stmt.setInt(6, agent.getId_department());
+            stmt.setInt(6, agent.getDepartment() != null ? agent.getDepartment().getId_department() : 0);
+
             stmt.setInt(7, agent.getId());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -107,9 +111,10 @@ public class AgentDAOImpl implements AgentDAO {
                     );
 
                     // department
-                    int depId = rs.getInt("id_department");
-                    if (depId != 0) {
-                        agent.setDepartment(new Department(depId, rs.getString("department_name")));
+                    int depId = rs.getInt("dep_id");
+                    String depName = rs.getString("department_name");
+                    if(depId != 0){
+                        agent.setDepartment(new Department(depId, depName));
                     }
 
                     agentMap.put(agentId, agent);
@@ -163,9 +168,10 @@ public class AgentDAOImpl implements AgentDAO {
                     );
 
                     // department
-                    int depId = rs.getInt("id_department");
-                    if (depId != 0) {
-                        agent.setDepartment(new Department(depId, rs.getString("department_name")));
+                    int depId = rs.getInt("dep_id");
+                    String depName = rs.getString("department_name");
+                    if(depId != 0){
+                        agent.setDepartment(new Department(depId, depName));
                     }
                 }
 
@@ -221,7 +227,7 @@ public class AgentDAOImpl implements AgentDAO {
                         rs.getString("email"),
                         rs.getString("password"),
                         AgentType.valueOf(rs.getString("agent_type")),
-                        rs.getInt("department_id")
+                        rs.getInt("id_department")
                 );
                 return agent;
             }

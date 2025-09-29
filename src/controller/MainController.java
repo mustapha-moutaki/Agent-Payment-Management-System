@@ -4,6 +4,7 @@ import com.sun.tools.javac.Main;
 import model.Agent;
 import model.Department;
 import model.Payment;
+import model.enums.AgentType;
 import service.AgentService;
 import service.DepartmentService;
 import service.PaymentService;
@@ -81,12 +82,30 @@ public class MainController {
     public List<Department>DepartmentList(){
         return departmentService.findAll();
     }
-
-    // 5- get departmnt by id
-    public Department getDepartmentByid(int id){
-        return departmentService.findDepartmentById(id);
+    // 5- getDepartment by id
+    public void getDepartmentById(int id){
+        departmentService.findDepartmentById(id);
     }
 
+    public void assignManagerToDepartment(Agent agent, Department department){
+        departmentService.assignManagerToDepartment(agent, department);
+    }
+
+
+    // 5- get departmnt by id
+    // we must add a foregin key manager_id to department table in db
+//    public Department getDepartmentByid(int id){
+//        return departmentService.findDepartmentById(id);
+//    }
+//
+//    public void assignManagerToDepartment(Department department, Agent manager) {
+//        if (manager.getAgent_type() != AgentType.RESPONSABLE_DEPARTEMENT) {
+//            System.out.println("This agent is not eligible to be a manager!");
+//            return;
+//        }
+//        department.setResponsible(manager);
+//        System.out.println("Manager assigned successfully!");
+//    }
 
     /**
      * ======================== Payment Controller ===================

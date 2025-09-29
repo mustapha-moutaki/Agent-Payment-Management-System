@@ -4,8 +4,14 @@ public class Department {
     private int id;
     private String name;
     private int id_department;
-    public Department(int id_department, String name){
+    private Agent Responsable;
+    // new edit
+    public Department(int id_department, String name) {
         this.id_department = id_department;
+        this.name = name;
+    }
+
+    public Department(String name){
         this.name =  name;
     }
 

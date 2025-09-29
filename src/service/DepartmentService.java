@@ -1,5 +1,6 @@
 package service;
 
+import model.Agent;
 import model.Department;
 
 import java.util.List;
@@ -10,4 +11,10 @@ public interface DepartmentService {
     List<Department> findAll();
     Department findDepartmentById(int id);
     void deleteDepartment(int it);
+
+
+    // new update
+    void assignAgentToDepartment(Agent agent, Department department);
+    void assignManagerToDepartment(Agent agent, Department department);
+    void getDepartmentsStatistics();
 }

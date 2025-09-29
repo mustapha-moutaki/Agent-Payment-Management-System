@@ -22,7 +22,7 @@ public class MainMenu {
     }
 
     int choice;
-    public void mainMenu(){
+    public void start(){
 
         do{
             System.out.println("\n╔══════════════════════════════════╗");
@@ -36,8 +36,8 @@ public class MainMenu {
             switch (choice){
                 case 1: login();
                     break;
-                case 0:
-                    System.out.println("good by");
+                case 0: System.out.println("good by");
+                        System.exit(0);
                 default:
                     System.out.println("invalid choice ");
             }
@@ -56,7 +56,7 @@ public class MainMenu {
             Agent agentLoggedIn = authService.login(email, password);
 
             if(agentLoggedIn != null){
-                System.out.println("✅ Welcome " + agentLoggedIn.getFirst_name());
+                System.out.println("==> Welcome " + agentLoggedIn.getFirst_name()+ "<==");
                 success = true;
                 switch (agentLoggedIn.getAgent_type()){
                     case OUVRIER -> new AgentUi(controller).agentMenu(agentLoggedIn);

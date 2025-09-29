@@ -34,9 +34,10 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 
     @Override
     public void updateDepattment(Department department) {
-        String sql = "UPDATE department SET name = ? WHERE department_id = ?";
+        String sql = "UPDATE department SET name = ? WHERE id_department = ?";
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1,department.getName());
+            stmt.setInt(2,department.getId_department());
 //            stmt.setInt(2,department.getId_manager());
             stmt.executeUpdate();
         }catch (SQLException e){
@@ -52,8 +53,9 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
                 return new Department(
-                        rs.getInt("id_department"),
+
                         rs.getString("name")
+//                        rs.getInt("id_department")
 //                        rs.getInt("id_manager")
                 );
             }
@@ -73,6 +75,8 @@ public class DepartmentDAOImpl implements DepartmentDAO {
             Department department = new Department(
                     rs.getInt("id_department"),
                     rs.getString("name")
+                   // error
+
 //                    rs.getInt("id_manager")
             );
             departments.add(department);

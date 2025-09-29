@@ -71,14 +71,26 @@ public class AgentUi {
     public void agentMenu(Agent agent) {
         int choice;
         do {
-            System.out.println("\n╔═══════════════════════════════╗");
-            System.out.println("║       Agent Menu              ║");
-            System.out.println("╠═══════════════════════════════╣");
-            System.out.println("║ 1️⃣  View Personal Info       ║");
-            System.out.println("║ 2️⃣  View Payments History    ║");
-            System.out.println("║ 3️⃣  Calculate Total Payments ║");
-            System.out.println("║ 0️⃣  Logout                   ║");
-            System.out.println("╚═══════════════════════════════╝");
+            System.out.println("\n╔════════════════════════════════════════════════════════╗");
+            System.out.println("║                     Manager Menu                        ║");
+            System.out.println("╠════════════════════════════════════════════════════════╣");
+            System.out.println("║ 1️⃣  Add Agent to My Department                          ║");
+            System.out.println("║ 2️⃣  Update Agent Details                                 ║");
+            System.out.println("║ 3️⃣  Delete Agent                                         ║");
+            System.out.println("║ 4️⃣  Add Payment to Agent                                  ║");
+            System.out.println("║    - Salary & Allowances according to contract           ║");
+            System.out.println("║    - Bonus & Compensation if eligible & approved        ║");
+            System.out.println("║ 5️⃣  View All Agents in My Department                     ║");
+            System.out.println("║ 6️⃣  View Payments of an Agent                             ║");
+            System.out.println("║ 7️⃣  Filter/Sort Payments by Type/Amount/Date            ║");
+            System.out.println("║ 8️⃣  Identify Unusual or Incorrect Payments              ║");
+            System.out.println("║ 9️⃣  Department Statistics                                 ║");
+            System.out.println("║    - Total payments for the department                   ║");
+            System.out.println("║    - Average salary                                       ║");
+            System.out.println("║    - Ranking agents by total payments                    ║");
+            System.out.println("║ 0️⃣  Logout                                              ║");
+            System.out.println("╚════════════════════════════════════════════════════════╝");
+
 
             choice = InputUtils.readInt("Enter your choice: ");
 
