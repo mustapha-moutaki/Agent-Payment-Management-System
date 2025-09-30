@@ -11,8 +11,11 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService {
 
     private PaymentDAO paymentDao;
-    public PaymentServiceImpl(Connection connection){
-        this.paymentDao = new PaymentDAOImpl(connection);
+//    public PaymentServiceImpl(Connection connection){
+//        this.paymentDao = new PaymentDAOImpl(connection);
+//    }
+public PaymentServiceImpl(PaymentDAO paymentDAO){
+        this.paymentDao = paymentDAO;
     }
 
     @Override

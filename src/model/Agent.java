@@ -8,19 +8,31 @@ import java.util.List;
 public class Agent extends Person{
     private AgentType agent_type;
 //    private double salary;
+    private int id;
     private int id_department;
     private Department department;
     private List<Payment> paymentsList;// agent payments list to store only payments of single agent
 
-    public Agent(String first_name, String last_name, String email, String password, AgentType type, int id_department){
+    public Agent(String first_name, String last_name, String email, String password, AgentType type){
         super(first_name, last_name, email, password);
         this.agent_type = type;
 //        this.salary = salary;
-        this.id_department = id_department;
+//        this.id_department = id_department;
         this.paymentsList = new ArrayList<>();
     }
 
+    public Agent(int id, String first_name, String last_name, String email, String password, AgentType type, int id_department){
+        this(first_name, last_name, email, password, type);
+        this.id = id;
+        this.id_department=id_department;
+    }
 
+    public int getId(){
+        return this.id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
     public AgentType getAgent_type() {
         return agent_type;
     }

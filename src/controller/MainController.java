@@ -54,8 +54,12 @@ public class MainController {
     }
 
     // 5- get agent by id
-    public Agent getAgent(int id){
+    public Agent getAgentById(int id){
         return agentService.getAgentById(id);
+    }
+
+    public boolean hasManagerInDepartment(int departmentId) {
+        return agentService.findManagersByDepartmentId(departmentId).size() > 0;
     }
 
 

@@ -7,14 +7,13 @@ import model.Payment;
 import model.enums.AgentType;
 import model.enums.PaymentType;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 
 public class AgentDAOImpl implements AgentDAO {
@@ -27,16 +26,29 @@ public class AgentDAOImpl implements AgentDAO {
     @Override
     public void saveAgent(Agent agent) {
         String sql = "INSERT INTO agent(first_name, last_name, email, password, agent_type, id_department)VALUES(?, ?, ?, ?, ?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql,  Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, agent.getFirst_name());
             stmt.setString(2, agent.getLast_name());
             stmt.setString(3, agent.getEmail());
             stmt.setString(4, agent.getPassword());
             stmt.setString(5, agent.getAgent_type().name());
 //            stmt.setInt(6, agent.getId_department());
-            stmt.setInt(6, agent.getDepartment() != null ? agent.getDepartment().getId_department() : 0);
-
+            if (agent.getDepartment() != null) {
+                stmt.setInt(6, agent.getDepartment().getId_department());
+            } else {
+                stmt.setNull(6, java.sql.Types.INTEGER);
+            }
             stmt.executeUpdate();
+            /*
+            because we don't wanna to insert id when we create agent we use
+            generatedKyes to get the id from db and set it for agent
+             */
+            ResultSet rs = stmt.getGeneratedKeys();
+            if(rs.next()){
+                int generatedId= rs.getInt(1);
+                agent.setId(generatedId);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -44,7 +56,7 @@ public class AgentDAOImpl implements AgentDAO {
 
     @Override
     public void updateAgent(Agent agent) {
-        String sql = "UPDATE agent SET first_name = ?, last_name = ?, email= ?, password = ?, agent_type = ?, id_department= ? WHERE agent_id = ?";
+        String sql = "UPDATE agent SET first_name = ?, last_name = ?, email= ?, password = ?, agent_type = ?, id_department= ? WHERE id_agent = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, agent.getFirst_name());
             stmt.setString(2, agent.getLast_name());
@@ -98,6 +110,7 @@ public class AgentDAOImpl implements AgentDAO {
 
             while (rs.next()) {
                 int agentId = rs.getInt("id_agent");
+//                System.out.println("*******************"+ agentId);
                 Agent agent = agentMap.get(agentId);
 
                 if (agent == null) {
@@ -106,9 +119,19 @@ public class AgentDAOImpl implements AgentDAO {
                             rs.getString("last_name"),
                             rs.getString("email"),
                             rs.getString("password"),
-                            AgentType.valueOf(rs.getString("agent_type")),
-                            rs.getInt("id_department")
+                            AgentType.valueOf(rs.getString("agent_type"))
+//                            rs.getInt("id_department")
                     );
+                    agent.setId(agentId);
+//                    agent = new Agent(
+//                            rs.getInt("id_agent"),
+//                            rs.getString("first_name"),
+//                            rs.getString("last_name"),
+//                            rs.getString("email"),
+//                            rs.getString("password"),
+//                            AgentType.valueOf(rs.getString("agent_type")),
+//                            department
+//                    );
 
                     // department
                     int depId = rs.getInt("dep_id");
@@ -159,6 +182,7 @@ public class AgentDAOImpl implements AgentDAO {
             while (rs.next()) {
                 if (agent == null) {
                     agent = new Agent(
+                            rs.getInt("id_agent"),
                             rs.getString("first_name"),
                             rs.getString("last_name"),
                             rs.getString("email"),
@@ -226,8 +250,8 @@ public class AgentDAOImpl implements AgentDAO {
                         rs.getString("last_name"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        AgentType.valueOf(rs.getString("agent_type")),
-                        rs.getInt("id_department")
+                        AgentType.valueOf(rs.getString("agent_type"))
+//                        rs.getInt("id_department")
                 );
                 return agent;
             }
@@ -235,6 +259,34 @@ public class AgentDAOImpl implements AgentDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    public List<Agent> findManagersByDepartmentId(int departmentId) {
+        List<Agent> managers = new ArrayList<>();
+        String sql = "SELECT * FROM agent WHERE agent_type = 'RESPONSABLE_DEPARTEMENT' AND id_department = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, departmentId);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                int dep = 0;
+                String depId = rs.getString("id_department");
+                if(Integer.parseInt(depId) != 0) dep = new Department(depId).getId_department();
+
+                managers.add(new Agent(
+                        rs.getInt("id_agent"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        AgentType.RESPONSABLE_DEPARTEMENT,
+                        dep
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return managers;
     }
 
 

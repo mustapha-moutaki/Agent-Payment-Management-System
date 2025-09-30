@@ -19,6 +19,7 @@ public class DirectorUi {
     private AuthentificationService authService;
     private DepartmentService departmentService;
     private AgentService agentService;
+
     public DirectorUi(MainController controller, AuthentificationService authService){
         this.controller = controller;
         this.authService = authService;
@@ -35,12 +36,12 @@ public class DirectorUi {
             System.out.println("║ 1️⃣  Create Department                                   ║");// done
             System.out.println("║ 2️⃣  Update Department                                   ║"); // done
             System.out.println("║ 3️⃣  Delete Department                                   ║"); // done
-            System.out.println("║ 4️⃣  Assign Manager to Department                        ║"); // done -test->done
-            System.out.println("║ 5️⃣  Add or Update Agent across Departments              ║"); // not yet
+            System.out.println("║ 4️⃣  Assign Manager to Department        (beta)          ║"); // Not work id not exist
+            System.out.println("║ 5️⃣  Add or Update Agent across Departments (beta)       ║"); // not yet
             System.out.println("║ 6️⃣  View All Departments                                ║"); // done with test
             System.out.println("║ 7️⃣  View All Agents                                     ║"); // done with test
             System.out.println("║ 8️⃣  View All Payments                                   ║");//  - Filter by Department, Agent, Type, Amount, Date
-            System.out.println("║ 9️⃣  View Company-wide Statistics                        ║");//Total number of Agents and Departments+Payment distribution (Salary / Allowances / Bonus / Compensation+ - Identify agent with highest total payments
+            System.out.println("║ 9️⃣  View Company-wide Statistics  (not yet)             ║");//Total number of Agents and Departments+Payment distribution (Salary / Allowances / Bonus / Compensation+ - Identify agent with highest total payments
             System.out.println("║ 0️⃣  Logout                                              ║"); // done
             System.out.println("╚════════════════════════════════════════════════════════╝");
             choice = InputUtils.readInt("Enter your choice: ");
@@ -109,7 +110,7 @@ public class DirectorUi {
 
             if (choice > 0 && choice <= departments.size()) {
                 Department chosenDepartment = departments.get(choice - 1);
-                System.out.println("Updating Department ID=" + chosenDepartment.getId_department());
+//                System.out.println("Updating Department ID=" + chosenDepartment.getId_department());
                 String newName = InputUtils.readString("Enter new name for the department: ");
                 chosenDepartment.setName(newName);
                 controller.updateDeaprtment(chosenDepartment);
@@ -151,65 +152,158 @@ public class DirectorUi {
     //check department line 8
     public void AddorUpdateAgentacrossDepartments(){
         System.out.println("\n╔════════════════════════════════╗");
-        System.out.println("║         Departments List       ║");
+        System.out.println("║         Manage Agents          ║");
         System.out.println("╚════════════════════════════════╝");
+
+
+        System.out.println("║1- Add Agent                    ║");
+        System.out.println("║2- update Agent                 ║");
+        System.out.println("╚════════════════════════════════╝");
+        int choice = InputUtils.readInt("Enter your choice: ");
+        switch (choice){
+            case 1: directorAddAgent();
+            break;
+            case 2: directorEditAgent();
+            case 0: System.exit(0);
+            default:
+                System.out.println("Invalid choice, please try again ");
+        }
     }
 
-
+    /*
+    work place--------------
+     */
     public void assignManagerToDepartment() {
         List<Agent> agents = controller.getAllAgent();
 
-        // getting all managers
+        // get all managers
         List<Agent> managers = agents.stream()
                 .filter(a -> a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT)
                 .toList();
 
         if (managers.isEmpty()) {
-            System.out.println("No manager available ");
+            System.out.println("No manager available.");
             return;
         }
 
-        // display managers list
+        // display agent menu
+        System.out.println("\nChoose a manager:");
         for (int i = 0; i < managers.size(); i++) {
             System.out.println((i + 1) + "- " + managers.get(i).getFirst_name() + " " + managers.get(i).getLast_name());
         }
 
-        int choice = InputUtils.readInt("chose the manager: ");
-        if (choice > 0 && choice <= managers.size()) {
-            Agent chosenManager = managers.get(choice - 1);
-
-            List<Department> departments = controller.DepartmentList();
-            if (departments.isEmpty()) {
-                System.out.println("No departments found ");
-                return;
-            }
-
-            // display departments list
-            for (int i = 0; i < departments.size(); i++) {
-                System.out.println((i + 1) + "- " + departments.get(i).getName());
-            }
-
-            int chosenDepa = InputUtils.readInt("chose department: ");
-            if (chosenDepa > 0 && chosenDepa <= departments.size()) {
-                Department chosenDepartment = departments.get(chosenDepa - 1);
-
-                // chcek if the department has already manager
-                boolean hasManager = agents.stream()
-                        .anyMatch(a -> a.getDepartment() != null
-                                && a.getDepartment().getId() == chosenDepartment.getId()
-                                && a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT);
-
-                if (hasManager) {
-                    System.out.println("==>department " + chosenDepartment.getName() + " has aleady manager!");
-                    return;
-                }
-
-                // assgin manager to department
-                controller.assignManagerToDepartment(chosenManager, chosenDepartment);
-                System.out.println("✅ manger " + chosenManager.getFirst_name() + "assigned to department:  " + chosenDepartment.getName());
-            }
+        int choice = InputUtils.readInt("Enter manager choice: ");
+        if (choice < 1 || choice > managers.size()) {
+            System.out.println("Invalid choice.");
+            return;
         }
+
+        Agent chosenManager = managers.get(choice - 1);
+
+        List<Department> departments = controller.DepartmentList();
+        if (departments.isEmpty()) {
+            System.out.println("No departments found.");
+            return;
+        }
+
+        // display departments menu
+        System.out.println("\nChoose a department:");
+        for (int i = 0; i < departments.size(); i++) {
+            System.out.println((i + 1) + "- " + departments.get(i).getName());
+        }
+
+        int depChoice = InputUtils.readInt("Enter department choice: ");
+        if (depChoice < 1 || depChoice > departments.size()) {
+            System.out.println("Invalid choice.");
+            return;
+        }
+
+        Department chosenDepartment = departments.get(depChoice - 1);
+
+        //  check the department has agent
+        boolean hasManager = controller.hasManagerInDepartment(chosenDepartment.getId_department());
+        if (hasManager) {
+            System.out.println("==> Department " + chosenDepartment.getName() + " already has a manager!");
+            return;
+        }
+
+        // get agent from db
+        Agent agentInDb = controller.getAgentById(chosenManager.getId());
+        if (agentInDb == null) {
+            System.out.println("Agent with ID " + chosenManager.getId() + " does not exist in DB.");
+            return;
+        }
+
+        // assign manager to depar
+        controller.assignManagerToDepartment(agentInDb, chosenDepartment);
+
+        System.out.println("✅ Manager " + agentInDb.getFirst_name() + " assigned to department: " + chosenDepartment.getName());
     }
+
+
+//    public void assignManagerToDepartment() {
+//        List<Agent> agents = controller.getAllAgent();
+//
+//        // getting all managers
+//        List<Agent> managers = agents.stream()
+//                .filter(a -> a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT)
+//                .toList();
+//
+//        if (managers.isEmpty()) {
+//            System.out.println("No manager available ");
+//            return;
+//        }
+//
+//        // display managers list
+//        for (int i = 0; i < managers.size(); i++) {
+//            System.out.println((i + 1) + "- " + managers.get(i).getFirst_name() + " " + managers.get(i).getLast_name());
+//        }
+//
+//        int choice = InputUtils.readInt("chose the manager: ");
+//        if (choice > 0 && choice <= managers.size()) {
+//            Agent chosenManager = managers.get(choice - 1);
+//
+//            List<Department> departments = controller.DepartmentList();
+//            if (departments.isEmpty()) {
+//                System.out.println("No departments found ");
+//                return;
+//            }
+//
+//            // display departments list
+//            for (int i = 0; i < departments.size(); i++) {
+//                System.out.println((i + 1) + "- " + departments.get(i).getName());
+//            }
+//
+//            int chosenDepa = InputUtils.readInt("chose department: ");
+//            if (chosenDepa > 0 && chosenDepa <= departments.size()) {
+//                Department chosenDepartment = departments.get(chosenDepa - 1);
+//
+//                // chcek if the department has already manager
+//                boolean hasManager = agents.stream()
+//                        .anyMatch(a -> a.getDepartment() != null
+//                                && a.getDepartment().getId() == chosenDepartment.getId()
+//                                && a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT);
+//
+//                if (hasManager) {
+//                    System.out.println("==>department " + chosenDepartment.getName()+chosenDepartment.getId_department() + " has aleady manager!");
+//                    return;
+//                }
+//
+//                Agent agentInDb = controller.getAgentById(chosenManager.getId());
+//                if (agentInDb == null) {
+//                    System.out.println("Agent with id: " + chosenManager.getId() + " does not exist in DB");
+//                    return;
+//                }
+//// assgin manager to department (use the one from DB)
+//                controller.assignManagerToDepartment(agentInDb, chosenDepartment);
+//                System.out.println("Manager " + agentInDb.getFirst_name() + " assigned to department: " + chosenDepartment.getName());
+//
+//                // assgin manager to department
+////                controller.assignManagerToDepartment(chosenManager, chosenDepartment);
+////                System.out.println("manger " + chosenManager.getFirst_name() + " assigned to department:  " + chosenDepartment.getName());
+//            }
+//        }
+//    }
 
     // 5- addAgentToDepartment
     public void addAgentToDepartment(){
@@ -244,6 +338,7 @@ public class DirectorUi {
 
         for (Agent agent: agentsList){
             System.out.println("-----------------------------");
+            System.out.println("- id: "+agent.getId());
             System.out.println("- First Name: "+agent.getFirst_name());
             System.out.println("- Last Name: "+agent.getLast_name());
             System.out.println("- Type: "+agent.getAgent_type().name());
@@ -283,9 +378,10 @@ public class DirectorUi {
 
 
 
-    private void addAgent(){
+    private void directorAddAgent() {
+        List<Department> departmentList = controller.DepartmentList();
         System.out.println("\n╔══════════════════════════════════╗");
-        System.out.println("║          Create  New  Agent       ║");
+        System.out.println("║          Create  New  Agent      ║");
         System.out.println("╚══════════════════════════════════╝");
 
         String firstName = InputUtils.readString("First Name: ");
@@ -293,26 +389,58 @@ public class DirectorUi {
         String email     = InputUtils.readString("Email: ");
         String password  = InputUtils.readString("Password: ");
 
-        // chose the role
+        if (departmentList.isEmpty()) {
+            System.out.println(" No department available. Please create one first!");
+            return;
+        }
+
+        System.out.println("\nChoose the department:");
+        for (int i = 0; i < departmentList.size(); i++) {
+            System.out.println((i + 1) + " - " + departmentList.get(i).getName());
+        }
+
+        int departmentChoice = InputUtils.readInt("Department: ");
+        if (departmentChoice < 1 || departmentChoice > departmentList.size()) {
+            System.out.println(" Invalid department choice!");
+            return;
+        }
+
+        int chosenDepaId = departmentList.get(departmentChoice - 1).getId_department();
+        System.out.println("department id:"+chosenDepaId);
+        // Choose the role
         System.out.println("\nChoose Role:");
         System.out.println("1️⃣  OUVRIER (Worker)");
         System.out.println("2️⃣  RESPONSABLE_DEPARTEMENT (Manager)");
         System.out.println("3️⃣  DIRECTEUR (Director)");
 
         int roleChoice = InputUtils.readInt("Enter your choice: ");
-        model.enums.AgentType role;
+        AgentType role;
 
         switch (roleChoice) {
-            case 1 -> role = model.enums.AgentType.OUVRIER;
-            case 2 -> role = model.enums.AgentType.RESPONSABLE_DEPARTEMENT;
+            case 1 -> role = AgentType.OUVRIER;
+            case 2 -> role = AgentType.RESPONSABLE_DEPARTEMENT;
             case 3 -> role = AgentType.DIRECTEUR;
             default -> {
-                System.out.println("Invalid choice! Defaulting to OUVRIER.");
-                role = model.enums.AgentType.OUVRIER;
+                System.out.println(" Invalid choice! Defaulting to OUVRIER.");
+                role = AgentType.OUVRIER;
             }
         }
 
-        authService.register(firstName, lastName, email, password, role);
+        // register agent
+        authService.register(firstName, lastName, email, password, role, chosenDepaId);
+
+        // show login data
+        System.out.println("\n--------------- Auth data ----------------------");
+        System.out.println("Email    : | " + email + " |");
+        System.out.println("Password : | " + password + " |");
+        System.out.println("------------------------------------------------");
+    }
+
+    public void directorEditAgent(){
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println("║          Edit  Agent  Info       ║");
+        System.out.println("╚══════════════════════════════════╝");
+
 
     }
 

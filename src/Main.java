@@ -29,99 +29,21 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        /*
-        // 1- we make connection with database
         Connection conn = DBConnection.getConnection();
 
-        AgentDAO agenDao = new AgentDAOImpl(conn);
-
-        //-----------Agent creation----------------------
-//        Agent newAgent = new Agent("hello", "worlfd", "ahmendmohammed@gmail.com", "12456", AgentType.OUVRIER, 1);
-//        agenDao.saveAgent(newAgent);
-//        System.out.println("agent created successfully");
-
-        //---------------delete------------------------------
-//        agenDao.deleteAgent(3);
-//        System.out.println("agent deleted successfully");
-        //--------------------------------------------------
-
-
-        // -------------find agent by id------------
-//        Agent agentfind= agenDao.findById(1);
-//        System.out.println(agentfind);
-//        System.out.println("the agent find success");
-
-
-// ------------------creating department-------------------
-            DepartmentDAOImpl deparDAO= new DepartmentDAOImpl(conn);
-//            Department depar1 = new Department(1, "it");
-//            deparDAO.saveDepartment(depar1);
-
-        DepartmentDAO deparDao = new DepartmentDAOImpl(conn);
-//        Department depar1 = new Department("marketing", 1);// creating department
-//        deparDao.saveDepartment(depar1);
-
-        //System.out.println(deparDao.findAll());// find the all department
-//        Department deparfinded = deparDao.findDepartmentById(2);
-//        System.out.println(deparfinded);// find the department by it\s id
- //       deparDao.deleteDepartment(2);// delete the department
-
-//        adding payment
-//        PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
-//        Payment payment1= new Payment(1,PaymentType.SALARY, 10, LocalDate.now(), true, 3);
-//        paymentDAO.savePayment(payment1);
-
-        // display all agent deatils
-//        System.out.println(agenDao.findAll());
-*/
-
-
-
-
-
-        // 1- connect with db
-            Connection conn = DBConnection.getConnection();
-
-
-        // DAO layer
+// DAO layer
         AgentDAO agentDAO = new AgentDAOImpl(conn);
         DepartmentDAO departmentDAO = new DepartmentDAOImpl(conn);
         PaymentDAO paymentDAO = new PaymentDAOImpl(conn);
 
 // Service layer
-//        String password = "123";
-//        String hashedPass = PasswordUtils.hash(password);
-//
-//        Agent manager = new Agent(
-//                "ousama",
-//                "manager",
-//                "ousama@gmail.com",
-//                password, // الأصلية إذا تريد تخزينها، أو استخدم hashedPass
-//                AgentType.RESPONSABLE_DEPARTEMENT,
-//                0
-//        );
-//
-//        String sql = "INSERT INTO agent (first_name, last_name, email, password, agent_type, id_department) VALUES (?, ?, ?, ?, ?, ?)";
-//
-//        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-//            stmt.setString(1, manager.getFirst_name());
-//            stmt.setString(2, manager.getLast_name());
-//            stmt.setString(3, manager.getEmail());
-//            stmt.setString(4, hashedPass); // أو password حسب رغبتك
-//            stmt.setString(5, manager.getAgent_type().name());
-//            stmt.setInt(6, manager.getId_department());
-//
-//            stmt.executeUpdate();
-//            System.out.println("Manager added successfully!");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        AgentService agentService = new AgentServiceImpl(agentDAO);
+        DepartmentService departmentService = new DepartmentServiceImpl(departmentDAO, agentDAO);
+        PaymentService paymentService = new PaymentServiceImpl(paymentDAO);
 
-        AgentService agentService = new AgentServiceImpl(conn);
-        DepartmentService departmentService = new DepartmentServiceImpl(conn);
-        PaymentService paymentService = new PaymentServiceImpl(conn);
-        // Authentication service
-        AuthentificationService authService = new AuthentificationService(agentDAO);
+// Authentication service
+        AuthentificationService authService = new AuthentificationService(agentDAO, departmentService);
+
 // Controller layer
         MainController controller = new MainController(agentService, departmentService, paymentService);
 

@@ -11,4 +11,5 @@ public interface AgentDAO {
      List<Agent> findAll();
      Agent findById(int id);
      Agent findByEmail(String email);
+    public List<Agent> findManagersByDepartmentId(int departmentId);
 }

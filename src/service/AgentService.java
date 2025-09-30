@@ -36,4 +36,7 @@ public interface AgentService {
      */
     Agent getAgentById(int id);
 
+    Agent findAgentByEmail(String email);
+
+    public List<Agent> findManagersByDepartmentId(int departmentId);
 }

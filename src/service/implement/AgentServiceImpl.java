@@ -9,10 +9,10 @@ import java.sql.Connection;
 import java.util.List;
 
 public class AgentServiceImpl implements AgentService {
-    private AgentDAO agentDAO;
-
-        public AgentServiceImpl(Connection connection){
-        this.agentDAO = new AgentDAOImpl(connection);
+//    private AgentDAO agentDAO;
+    private final AgentDAO agentDAO;
+        public AgentServiceImpl(AgentDAO agentDAO){
+        this.agentDAO = agentDAO;
     }
 
 
@@ -39,5 +39,15 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public Agent getAgentById(int id) {
         return agentDAO.findById(id);
+    }
+
+    @Override
+    public Agent findAgentByEmail(String email) {
+        return agentDAO.findByEmail(email);
+    }
+
+    @Override
+    public List<Agent> findManagersByDepartmentId(int departmentId) {
+        return agentDAO.findManagersByDepartmentId(departmentId);
     }
 }

@@ -28,7 +28,7 @@ public class AgentUi {
     }
 
     public Agent getAgentById(int id){
-        return controller.getAgent(id);
+        return controller.getAgentById(id);
     }
 
     public void getAgentList() {

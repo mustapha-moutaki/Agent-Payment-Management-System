@@ -16,9 +16,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     private DepartmentDAO departmentDAO;
     private DepartmentService departmentService;
     private AgentDAO agentDAO;
-    public DepartmentServiceImpl(Connection connection){
-        this.departmentDAO = new DepartmentDAOImpl(connection);
-    }
+//    public DepartmentServiceImpl(Connection connection){
+//        this.departmentDAO = new DepartmentDAOImpl(connection);
+//    }
+public DepartmentServiceImpl(DepartmentDAO departmentDAO, AgentDAO agentDAO){
+    this.departmentDAO = departmentDAO;
+    this.agentDAO = agentDAO;
+}
+
 
     @Override
     public void addDepartment(Department department) {
@@ -68,10 +73,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void assignManagerToDepartment(Agent agent, Department department){
 
         if (agent == null || department == null) {
-            System.out.println("⚠ Agent or Department is null!");
+            System.out.println("Agent or Department is null!");
             return;
         }
-        agent.setDepartment(department);
+        Agent agentIsExist = agentDAO.findById(agent.getId());
+        if(agentIsExist == null){
+            System.out.println("agent with id: "+agent.getId()+" is not exist");
+            return;
+        }
+        agentIsExist.setDepartment(department);
+        agentDAO.updateAgent(agentIsExist);
+        System.out.println("Updating Agent ID: " + agentIsExist + " with Department ID: " + agent.getDepartment().getId_department());
+
         agentDAO.updateAgent(agent);
 
             }
