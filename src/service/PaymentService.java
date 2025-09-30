@@ -2,6 +2,7 @@ package service;
 
 import model.Payment;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PaymentService {
@@ -10,6 +11,8 @@ public interface PaymentService {
     List<Payment> getAll();
     Payment findPaymentById(int id);
     void deletePayment(int id);
-
+    List<Payment>filterByType(String type);
+    List<Payment>filterByDate(LocalDate date);
+    List<Payment>filterByAmount(double min, double max);
 
 }

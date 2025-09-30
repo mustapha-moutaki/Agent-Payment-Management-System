@@ -6,11 +6,15 @@ import model.Payment;
 import service.PaymentService;
 
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class PaymentServiceImpl implements PaymentService {
 
     private PaymentDAO paymentDao;
+    List<Payment>payments = paymentDao.findAll();
 //    public PaymentServiceImpl(Connection connection){
 //        this.paymentDao = new PaymentDAOImpl(connection);
 //    }
@@ -41,5 +45,24 @@ public PaymentServiceImpl(PaymentDAO paymentDAO){
     @Override
     public void deletePayment(int id) {
          paymentDao.deletePayment(id);
+    }
+
+    @Override
+    public List<Payment> filterByType(String type) {
+
+        List<Payment> typeFilteredPayments =payments.stream().filter(p-> p.getType().name().equals(type)).collect(Collectors.toList());
+        return typeFilteredPayments;
+    }
+
+    @Override
+    public List<Payment> filterByDate(LocalDate date) {
+        List<Payment>dateFilteredPayments = payments.stream().filter(p->p.getDate().equals(date)).collect(Collectors.toList());
+        return dateFilteredPayments;
+    }
+
+    @Override
+    public List<Payment> filterByAmount(double min, double max) {
+        List<Payment>amountFilteredPayments = payments.stream().filter(p->p.getAmount()>min && p.getAmount()< max).collect(Collectors.toList());
+        return amountFilteredPayments;
     }
 }

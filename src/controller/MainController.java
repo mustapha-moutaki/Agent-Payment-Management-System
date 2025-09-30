@@ -9,6 +9,7 @@ import service.AgentService;
 import service.DepartmentService;
 import service.PaymentService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 // how to create a controller that handle all services (busines logic of all models)
@@ -140,7 +141,20 @@ public class MainController {
         return paymentService.findPaymentById(id);
     }
 
+    // 6- payments filtred by type
+    public List<Payment>typeFiltredPaymentsList(String type){
+        return paymentService.filterByType(type);
+    }
 
+    // 7- payments filtred by amout
+    public List<Payment>amountFiltredPaymentsList(double min, double max){
+        return paymentService.filterByAmount(min, max);
+    }
+
+    // 8- payments filtred by date
+    public List<Payment>dateFiltredPaymentsList(LocalDate date){
+        return paymentService.filterByDate(date);
+    }
     /**
      * done
      */
