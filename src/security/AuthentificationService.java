@@ -9,7 +9,7 @@ import service.DepartmentService;
 public class AuthentificationService {
         private AgentDAO agentDAO;
         private DepartmentService departmentService;
-
+        private Agent currentAgent;
         public AuthentificationService(AgentDAO agentDAO, DepartmentService departmentService){
             this.agentDAO = agentDAO;
             this.departmentService = departmentService;
@@ -18,6 +18,7 @@ public class AuthentificationService {
         public Agent login(String email, String password){
             Agent agent = agentDAO.findByEmail(email);
             if(agent != null && PasswordUtils.verify(password, agent.getPassword())){
+                this.currentAgent = agent;
                 return agent;
 
             }
@@ -45,5 +46,10 @@ public class AuthentificationService {
             agentDAO.saveAgent(newAgent);
             System.out.println("↪ Registration successful! Welcome " + firstName + " as " + role.name());
 
+        }
+
+
+        public Agent getCurrentAgent(){
+            return this.currentAgent;
         }
 }

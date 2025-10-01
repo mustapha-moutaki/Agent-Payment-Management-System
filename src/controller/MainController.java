@@ -10,6 +10,7 @@ import service.DepartmentService;
 import service.PaymentService;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 // how to create a controller that handle all services (busines logic of all models)
@@ -152,7 +153,7 @@ public class MainController {
     }
 
     // 8- payments filtred by date
-    public List<Payment>dateFiltredPaymentsList(LocalDate date){
+    public List<Payment>dateFiltredPaymentsList(Date date){
         return paymentService.filterByDate(date);
     }
     /**

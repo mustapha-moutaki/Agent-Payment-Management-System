@@ -7,6 +7,7 @@ import service.PaymentService;
 
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public PaymentServiceImpl(PaymentDAO paymentDAO){
 
     @Override
     public void addPayment(Payment payment) {
+    // should put the validation here
         paymentDao.savePayment(payment);
     }
 
@@ -55,7 +57,7 @@ public PaymentServiceImpl(PaymentDAO paymentDAO){
     }
 
     @Override
-    public List<Payment> filterByDate(LocalDate date) {
+    public List<Payment> filterByDate(Date date) {
         List<Payment>dateFilteredPayments = payments.stream().filter(p->p.getDate().equals(date)).collect(Collectors.toList());
         return dateFilteredPayments;
     }

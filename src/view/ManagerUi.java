@@ -1,19 +1,27 @@
 package view;
 
+import Utils.DateUtils;
 import Utils.InputUtils;
 import controller.MainController;
 import model.Agent;
 import model.Payment;
+import model.enums.AgentType;
+import model.enums.PaymentType;
+import security.AuthentificationService;
 
+import javax.swing.text.Utilities;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
+import java.util.List;
 
 public class ManagerUi {
     private MainController controller;
-
-    public ManagerUi(MainController controller){
+    private AuthentificationService auth;
+    public ManagerUi(MainController controller, AuthentificationService auth){
         this.controller = controller;
+        this.auth = auth;
     }
 
     public void managerMenu(Agent manager){
@@ -41,11 +49,55 @@ public class ManagerUi {
 
             choice = InputUtils.readInt("Enter your choice: ");
             switch (choice){
-               case 1:// addPaymentSalaryPrime(payment);
+               case 1:  System.out.println("\n╔════════════════════════════════════════════════════╗");
+                   System.out.println("║                    Add Payment                            ║");
+                   System.out.println("╠══════════════════════════════════════════════════════╣");
+//                   controller.getAllAgent();
+                   /*
+                   i  have to get all agents that are in the same manager id
+                    */
+
+                   System.out.println("-----Your department agents list-----");
+//                    int managerDepartment_id = 0;
+                   // get the manager partment id
+                    int managerDepartment_id  = auth.getCurrentAgent().getDepartment().getId_department();
+                    //filter the agent in the same manager department
+                   List<Agent> managerAgents = controller.getAllAgent().stream()
+                           .filter(agent -> agent.getDepartment() != null &&
+                                   agent.getDepartment().getId_department() == managerDepartment_id)
+                           .toList();
+//ghj
+                    if(!managerAgents.isEmpty()){
+                        for (int i = 0; i < managerAgents.size(); i++) {
+                            System.out.println((i+1) +">"+ managerAgents.get(i).getFirst_name()+ " - "+managerAgents.get(i).getLast_name());
+                        }
+                        System.out.println("Enter the number of the agent-> ");
+                        int uchoice  =InputUtils.readInt("Enter: ");
+                        if(uchoice > 0 && uchoice <= managerAgents.size()){
+                            int chosenAgent = managerAgents.get(uchoice - 1).getId();
+                            System.out.println("Enter amount: ");
+                            Double amount = InputUtils.readDouble("Enter: ");
+
+                            System.out.println("Enter payment type=>");
+                            System.out.println("(1) - SALARY");
+                            System.out.println("(2) - PRIME");
+                            int paytype = InputUtils.readInt("Enter: ");
+                            PaymentType paymentType1 = (paytype == 1)? PaymentType.SALARY : PaymentType.PRIME;
+                            Payment payment = new Payment(0,paymentType1, amount, LocalDate.now(),false,chosenAgent);
+                            addPaymentSalaryPrime(payment);
+
+                        }else{
+                            System.out.println("invalid choice, try again");
+                        }
+                    }else{
+                        System.out.println("No agent found");
+                    }
+
                 break;
                 case 2:addPaymentEligible();
                 break;
-                case 3: addAgentToDepartment();
+                case 3:
+                    addAgentToDepartment();
                 break;
                 case 4: removeAgentFromDepartment();
                 break;
@@ -153,15 +205,15 @@ public class ManagerUi {
                 controller.amountFiltredPaymentsList(minMount, maxMount);
                 System.out.println("-----------------------------------");
             break;
-            case 3: System.out.println("╠═════════════════║ Filter by Date ║═════════════════╣");
-                String inputDate = InputUtils.readString("Enter Date (yyyy-MM-dd): ");
-                try {
-                    LocalDate date = LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            case 3:System.out.println("╠═════════════════║ Filter by Date ║═════════════════╣");
+                String inputDate = InputUtils.readString("Enter Date (dd/MM/yyyy): ");
+
+                Date date = DateUtils.parse(inputDate);
+                if (date != null) {
                     controller.dateFiltredPaymentsList(date);
-                } catch (DateTimeParseException e) {
-                    System.out.println("Invalid date format! Please use yyyy-MM-dd");
                 }
-            break;
+
+                break;
             case 0: System.exit(0);
             default:
                 System.out.println("Invalid choice, try again pls");

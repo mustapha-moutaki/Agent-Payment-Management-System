@@ -49,6 +49,7 @@ public class MainMenu {
 
     private void login() {
         boolean success = false;
+
         do {
             System.out.println("== Please enter your info ==");
             String email = InputUtils.readString("Email: ");
