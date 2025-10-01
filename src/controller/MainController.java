@@ -5,6 +5,7 @@ import model.Agent;
 import model.Department;
 import model.Payment;
 import model.enums.AgentType;
+import model.enums.PaymentType;
 import service.AgentService;
 import service.DepartmentService;
 import service.PaymentService;
@@ -118,8 +119,8 @@ public class MainController {
      */
 
     // 1- create Payment
-    public void addPayment(Payment payment){
-        paymentService.addPayment(payment);
+    public Boolean addPayment(Payment payment){
+        return paymentService.addPayment(payment);
     }
 
     // 2- delete Payment
@@ -155,6 +156,10 @@ public class MainController {
     // 8- payments filtred by date
     public List<Payment>dateFiltredPaymentsList(Date date){
         return paymentService.filterByDate(date);
+    }
+    //9- Isegligible
+    public Boolean isEligible(int agentId, PaymentType type){
+        return paymentService.isEligible(agentId, type);
     }
     /**
      * done

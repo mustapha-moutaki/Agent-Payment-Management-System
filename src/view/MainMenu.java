@@ -61,7 +61,7 @@ public class MainMenu {
                 success = true;
                 switch (agentLoggedIn.getAgent_type()){
                     case OUVRIER -> new AgentUi(controller).agentMenu(agentLoggedIn);
-                    case RESPONSABLE_DEPARTEMENT -> new ManagerUi(controller).managerMenu(agentLoggedIn);
+                    case RESPONSABLE_DEPARTEMENT -> new ManagerUi(controller, authService).managerMenu(agentLoggedIn);
                     case DIRECTEUR -> new DirectorUi(controller, authService).directorMenu(agentLoggedIn);
                 }
             } else {

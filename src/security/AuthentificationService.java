@@ -19,6 +19,7 @@ public class AuthentificationService {
             Agent agent = agentDAO.findByEmail(email);
             if(agent != null && PasswordUtils.verify(password, agent.getPassword())){
                 this.currentAgent = agent;
+
                 return agent;
 
             }

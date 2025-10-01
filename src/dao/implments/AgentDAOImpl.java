@@ -1,6 +1,7 @@
 package dao.implments;
 
 import dao.AgentDAO;
+import dao.DepartmentDAO;
 import model.Agent;
 import model.Department;
 import model.Payment;
@@ -236,6 +237,7 @@ public class AgentDAOImpl implements AgentDAO {
         }
     }
 
+
     @Override
     public Agent findByEmail(String email) {
         String sql = "SELECT * FROM agent WHERE email = ?";
@@ -244,15 +246,24 @@ public class AgentDAOImpl implements AgentDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-
                 Agent agent = new Agent(
+                        rs.getInt("id_agent"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        AgentType.valueOf(rs.getString("agent_type"))
-//                        rs.getInt("id_department")
+                        AgentType.valueOf(rs.getString("agent_type")),
+                        rs.getInt("id_department") // the column that we need
                 );
+
+
+                int deptId = rs.getInt("id_department");
+                if (!rs.wasNull()) {
+                    DepartmentDAO deptDao = new DepartmentDAOImpl(connection);
+                    Department dept = deptDao.findDepartmentById(deptId);
+                    agent.setDepartment(dept);
+                }
+
                 return agent;
             }
         } catch (Exception e) {
@@ -260,6 +271,7 @@ public class AgentDAOImpl implements AgentDAO {
         }
         return null;
     }
+
 
 
     public List<Agent> findManagersByDepartmentId(int departmentId) {

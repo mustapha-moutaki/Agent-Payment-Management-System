@@ -46,26 +46,22 @@ public class DepartmentDAOImpl implements DepartmentDAO {
     }
 
     @Override
-    public Department findDepartmentById(int id) {
-        String sql = "SELECT * FROM department WHERE id_department = ?";
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1,id);
-            ResultSet rs = stmt.executeQuery();
-            if(rs.next()){
-                return new Department(
-
-                        rs.getString("name")
-//                        rs.getInt("id_department")
-//                        rs.getInt("id_manager")
-                );
+        public Department findDepartmentById(int id) {
+            String sql = "SELECT * FROM department WHERE id_department = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if(rs.next()){
+                    return new Department(rs.getInt("id_department"), rs.getString("name"));
+                }
+            } catch(SQLException e){
+                e.printStackTrace();
             }
-        }catch(SQLException e){
-            e.printStackTrace();
+            return null;
         }
-        return null;
-    }
 
-    @Override
+
+        @Override
     public List<Department> findAll() {
         List<Department>departments = new ArrayList<>();
         String sql = "SELECT * FROM department";
