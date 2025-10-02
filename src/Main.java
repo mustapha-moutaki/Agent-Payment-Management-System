@@ -45,7 +45,7 @@ public class Main {
         AuthentificationService authService = new AuthentificationService(agentDAO, departmentService);
 
 // Controller layer
-        MainController controller = new MainController(agentService, departmentService, paymentService);
+        MainController controller = new MainController(agentService, departmentService, paymentService, authService);
 
 // View layer
         MainMenu menu = new MainMenu(agentDAO, authService, controller);

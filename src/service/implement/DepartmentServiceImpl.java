@@ -81,6 +81,7 @@ public DepartmentServiceImpl(DepartmentDAO departmentDAO, AgentDAO agentDAO){
             System.out.println("agent with id: "+agent.getId()+" is not exist");
             return false;
         }
+//        agentIsExist.setId_department(department.getId_department());
         agentIsExist.setDepartment(department);
         agentDAO.updateAgent(agentIsExist);
 

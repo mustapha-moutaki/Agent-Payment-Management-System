@@ -6,6 +6,7 @@ import model.Department;
 import model.Payment;
 import model.enums.AgentType;
 import model.enums.PaymentType;
+import security.AuthentificationService;
 import service.AgentService;
 import service.DepartmentService;
 import service.PaymentService;
@@ -23,14 +24,16 @@ public class MainController {
     private AgentService agentService;
     private DepartmentService departmentService;
     private PaymentService paymentService;
+    private AuthentificationService authentificationService;
 
     /* constructor
      */
 
-    public MainController(AgentService agentService, DepartmentService departmentService, PaymentService paymentService){
+    public MainController(AgentService agentService, DepartmentService departmentService, PaymentService paymentService, AuthentificationService authentificationService){
         this.agentService = agentService;
         this.departmentService = departmentService;
         this.paymentService = paymentService;
+        this.authentificationService = authentificationService;
     }
 
     /**
@@ -166,6 +169,15 @@ public class MainController {
     //9- Isegligible
     public Boolean isEligible(int agentId, PaymentType type){
         return paymentService.isEligible(agentId, type);
+    }
+
+
+
+
+
+    // authService
+    public Agent authAgent(){
+       return  authentificationService.getCurrentAgent();
     }
     /**
      * done

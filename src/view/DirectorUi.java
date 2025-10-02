@@ -12,6 +12,7 @@ import service.DepartmentService;
 
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.Scanner;
 
 public class DirectorUi {
 
@@ -19,7 +20,7 @@ public class DirectorUi {
     private AuthentificationService authService;
     private DepartmentService departmentService;
     private AgentService agentService;
-
+    Scanner sc = new Scanner(System.in);
     public DirectorUi(MainController controller, AuthentificationService authService){
         this.controller = controller;
         this.authService = authService;
@@ -27,6 +28,7 @@ public class DirectorUi {
     }
 
     public void directorMenu(Agent director){
+
         int choice;
         do {
 
@@ -41,7 +43,7 @@ public class DirectorUi {
             System.out.println("║ 6️⃣  View All Departments                                ║"); // done with test
             System.out.println("║ 7️⃣  View All Agents                                     ║"); // done with test
             System.out.println("║ 8️⃣  View All Payments                                   ║");//  - Filter by Department, Agent, Type, Amount, Date
-            System.out.println("║ 9️⃣  View Company-wide Statistics  (not yet)             ║");//Total number of Agents and Departments+Payment distribution (Salary / Allowances / Bonus / Compensation+ - Identify agent with highest total payments
+            System.out.println("║ 9️⃣  View Company-wide Statistics  (not yet)             ║");
             System.out.println("║ 0️⃣  Logout                                              ║"); // done
             System.out.println("╚════════════════════════════════════════════════════════╝");
             choice = InputUtils.readInt("Enter your choice: ");
@@ -107,7 +109,7 @@ public class DirectorUi {
             }
 
              choice = InputUtils.readInt("Enter your choice: ");
-
+//                sc.nextLine();
             if (choice > 0 && choice <= departments.size()) {
                 Department chosenDepartment = departments.get(choice - 1);
 //                System.out.println("Updating Department ID=" + chosenDepartment.getId_department());
@@ -154,8 +156,6 @@ public class DirectorUi {
         System.out.println("\n╔════════════════════════════════╗");
         System.out.println("║         Manage Agents          ║");
         System.out.println("╚════════════════════════════════╝");
-
-
         System.out.println("║1- Add Agent                    ║");
         System.out.println("║2- update Agent                 ║");
         System.out.println("╚════════════════════════════════╝");
@@ -199,7 +199,7 @@ public class DirectorUi {
         }
 
         Agent chosenManager = managers.get(choice - 1);
-
+        System.out.println("chose manager --------------------------------> "+ chosenManager.getId());
         List<Department> departments = controller.DepartmentList();
         if (departments.isEmpty()) {
             System.out.println("No departments found.");
@@ -219,7 +219,6 @@ public class DirectorUi {
         }
 
         Department chosenDepartment = departments.get(depChoice - 1);
-
         //  check the department has agent
         boolean hasManager = controller.hasManagerInDepartment(chosenDepartment.getId_department());
         if (hasManager) {
@@ -235,9 +234,13 @@ public class DirectorUi {
         }
 
         // assign manager to depar
-        controller.assignManagerToDepartment(agentInDb, chosenDepartment);
+        Boolean isSuccess = controller.assignManagerToDepartment(agentInDb, chosenDepartment);
+        if(isSuccess){
+            System.out.println("- Manager " + agentInDb.getFirst_name() + " assigned to department: " + chosenDepartment.getName());
+        }else{
+            System.err.println("error to assigne manager to department, try again");
+        }
 
-        System.out.println("✅ Manager " + agentInDb.getFirst_name() + " assigned to department: " + chosenDepartment.getName());
     }
 
 
