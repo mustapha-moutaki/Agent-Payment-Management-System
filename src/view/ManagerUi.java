@@ -16,10 +16,14 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class ManagerUi {
     private MainController controller;
     private AuthentificationService auth;
+    Scanner sc = new Scanner(System.in);
+
     public ManagerUi(MainController controller, AuthentificationService auth){
         this.controller = controller;
         this.auth = auth;
@@ -35,21 +39,20 @@ public class ManagerUi {
             System.out.println("║ 2️⃣  Add Payment (BONUS / INDEMNITE) if eligible          ║");
             System.out.println("║ 3️⃣  Add Agent to your Department                         ║");
             System.out.println("║ 4️⃣  Delete Agent from your Department                    ║");
-            System.out.println("║ 5️⃣  Update Agent Info in your Department                 ║");
+            System.out.println("║ 5️⃣  Update Agent Info in your Department                 ║");// not yet
             System.out.println("║ 6️⃣  View Department Payments                             ║");
-            System.out.println("║ 7️⃣  Edit or Delete Payments if needed                    ║");
-            System.out.println("║ 8️⃣  Filter Payments by Type / Date / Amount              ║");
-            System.out.println("║ 9️⃣  View Payments per Agent in the Department            ║");
-            System.out.println("║ 🔟  View Statistics for Department                       ║");
+            System.out.println("║ 7️⃣  Filter Payments by Type / Date- / Amount             ║");
+            System.out.println("║ 8️⃣  View Payments per Agent in the Department            ║");// done
+            System.out.println("║ 9️⃣  View Statistics for Department                       ║"); // notyet
             System.out.println("║    - Total payments per agent                            ║");
-            System.out.println("║    - Total payments for the department                   ║");
+            System.out.println("║    - Total payments for the department                   ║");// include in the n: 6
             System.out.println("║    - Average payments per agent                          ║");
             System.out.println("║    - Rank agents by total payments                       ║");
             System.out.println("║ 0️⃣  Logout                                               ║");
             System.out.println("╚══════════════════════════════════════════════════════════╝");
 
             choice = InputUtils.readInt("Enter your choice: ");
-            InputUtils.readString("");
+
             switch (choice){
                 case 1:
                     System.out.println("\n╔════════════════════════════════════════════════════╗");
@@ -57,17 +60,13 @@ public class ManagerUi {
                     System.out.println("╠════════════════════════════════════════════════════╣");
 
 
-                    System.out.println("-----All Agents in System-----");
-                    controller.getAllAgent().forEach(a ->
-                            System.out.println(a.getFirst_name() + " - " +
-                                    (a.getDepartment() != null ? a.getDepartment().getId_department() : "null"))
-                    );
-                    System.out.println("here we check");
+
+
 
 
                     Agent current = auth.getCurrentAgent();
-                    System.out.println("Current agent: " + current.getFirst_name() + " - department id: " +
-                            (current.getDepartment() != null ? current.getDepartment().getId_department() : "null"));
+//                    System.out.println("Current agent: " + current.getFirst_name() + " - department id: " +
+//                            (current.getDepartment() != null ? current.getDepartment().getId_department() : "null"));
                     int managerDepartment_id = auth.getCurrentAgent().getDepartment().getId_department();
 
                     // filter agents
@@ -84,7 +83,7 @@ public class ManagerUi {
 
 
                         int uchoice = InputUtils.readInt("Enter the number of the agent-> ");
-                        InputUtils.readString("");
+
                         if(uchoice > 0 && uchoice <= managerAgents.size()){
                             int chosenAgent = managerAgents.get(uchoice - 1).getId();
 
@@ -96,6 +95,7 @@ public class ManagerUi {
                             System.out.println("(1) - SALARY");
                             System.out.println("(2) - PRIME");
                             int paytype = InputUtils.readInt("Enter: ");
+
                             PaymentType paymentType1 = (paytype == 1) ? PaymentType.SALARY : PaymentType.PRIME;
 
 
@@ -133,7 +133,7 @@ public class ManagerUi {
                     }
 
                     int uchoice = InputUtils.readInt("Enter the number of the agent-> ");
-                    InputUtils.readString("");
+
                     if(uchoice <= 0 || uchoice > managerAgents1.size()){
                         System.out.println("Invalid choice, try again");
                         return;
@@ -194,6 +194,7 @@ public class ManagerUi {
                     }
 
                     int agentChoice = InputUtils.readInt("Select agent to assign: ");
+
                     if(agentChoice <= 0 || agentChoice > unassignedWorkers.size()){
                         System.out.println("Invalid choice");
                         return;
@@ -215,6 +216,7 @@ public class ManagerUi {
                     }
 
                     int deptChoice = InputUtils.readInt("Select department to assign agent: ");
+
                     if(deptChoice <= 0 || deptChoice > departments.size()){
                         System.out.println("Invalid choice");
                         return;
@@ -258,6 +260,7 @@ public class ManagerUi {
 
 
                     int agentChoice1 = InputUtils.readInt("Select agent to remove: ");
+
                     if(agentChoice1 <= 0 || agentChoice1 > managerAgents3.size()){
                         System.out.println("Invalid choice");
                         break;
@@ -275,16 +278,16 @@ public class ManagerUi {
                     }
                     break;
 
-                case 5: updateAgentInfoDepartment();
+                case 5:
+                    updateAgentInfoDepartment();
                 break;
-                case 6: viewDepartmentPayments();
+                case 6: viewDepartmentPayments();// done
                 break;
-                case 7: managePayments();
-                case 8: filterPayments();
+                case 7: filterPayments();// done
                 break;
-                case 9: viewPaymentsPerAgent();
+                case 8: viewPaymentsPerAgent();
                 break;
-                case 10: statistics();
+                case 9: statistics();
                 break;
                 case 0: System.exit(0);
                 default:
@@ -321,17 +324,29 @@ public class ManagerUi {
 
     // 6- viewDepartmentPayments
     void viewDepartmentPayments(){
+        System.out.println("\n╔════════════════════════════════════════════════════════╗");
+        System.out.println("║                     Departments payments list             ║");
+        System.out.println("════════════════════════════════════════════════════════");
 
+       Map<Department, Double> departmentPaymentList =  controller.getTotalPaymentsByDepartment();
+        System.out.println("--------------------");
+       for(Map.Entry<Department, Double> entry : departmentPaymentList.entrySet()){
+        Department depar = entry.getKey();
+        Double total = entry.getValue();
+           System.out.println("Department      |" + depar.getName());
+           System.out.println("total Payments: |"+total);
+           System.out.println("--------------------");
+       }
     }
 
-    // 7- managePayments
+    // 7- managePayments by list
     void managePayments(){
 
     }
 
     // 8- filter
     void filterPayments(){
-        System.out.println("\n╔════════════════════════════════════════════════════╗");
+        System.out.println("\n╔══════════════════════════════════════════════════════╗");
         System.out.println("║                    Filter                            ║");
         System.out.println("╠══════════════════════════════════════════════════════╣");
         System.out.println("1- Filter by Type");
@@ -339,6 +354,7 @@ public class ManagerUi {
         System.out.println("3- Filter by Date");
         System.out.println("Enter your choise: ");
         int choice = InputUtils.readInt("Enter: ");
+
         switch (choice){
             case 1:
                 System.out.println("╠═════════════════║Filter-by-Type║═════════════════╣");
@@ -347,25 +363,45 @@ public class ManagerUi {
                 System.out.println("3 -Bonus");
                 System.out.println("4 -Indemnite");
                 System.out.println("Enter your choice: ");
-                String schoice = InputUtils.readString("Enter: ");
+                int schoice = InputUtils.readInt("Enter: ");
 
-                switch (Integer.parseInt(schoice)){
+                switch (schoice){
                     case 1:
                         System.out.println("---------Type = Salary-------------");
-                        controller.typeFiltredPaymentsList("Salary");
+                        List<Payment>paymentsSalary = controller.typeFiltredPaymentsList("Salary");
+                        for(Payment pay : paymentsSalary){
+                            System.out.println("-------");
+                            System.out.println("payment amount: "+ pay.getAmount());
+                            System.out.println("payment date: "+ pay.getDate());
+                        }
                         System.out.println("-----------------------------------");
                     break;
                     case 2:
                         System.out.println("---------Type = Prime-------------");
-                        controller.typeFiltredPaymentsList("Prime");
+                        List<Payment>paymentsPrime=controller.typeFiltredPaymentsList("Prime");
+                        for(Payment pay : paymentsPrime){
+                            System.out.println("-------");
+                            System.out.println("payment amount: "+ pay.getAmount());
+                            System.out.println("payment date: "+ pay.getDate());
+                        }
                         System.out.println("-----------------------------------");
                     break;
                     case 3: System.out.println("---------Type = Bonus-------------");
-                        controller.typeFiltredPaymentsList("Bonus");
+                        List<Payment>paymentsBonus =  controller.typeFiltredPaymentsList("Bonus");
+                        for(Payment pay : paymentsBonus){
+                            System.out.println("-------");
+                            System.out.println("payment amount: "+ pay.getAmount());
+                            System.out.println("payment date: "+ pay.getDate());
+                        }
                         System.out.println("-----------------------------------");
                     break;
                     case 4: System.out.println("---------Type = Indemnite-------------");
-                        controller.typeFiltredPaymentsList("Indemnite");
+                        List<Payment>paymentsIndemnite= controller.typeFiltredPaymentsList("Indemnite");
+                        for(Payment pay : paymentsIndemnite){
+                            System.out.println("-------");
+                            System.out.println("payment amount: "+ pay.getAmount());
+                            System.out.println("payment date: "+ pay.getDate());
+                        }
                         System.out.println("-----------------------------------");
                     break;
                     case 0: System.exit(0);
@@ -377,15 +413,27 @@ public class ManagerUi {
             case 2: System.out.println("╠═════════════════║Filter-by-Amount║═════════════════╣");
                 double minMount = InputUtils.readDouble("Enter Min: ");
                 double maxMount = InputUtils.readDouble("Enter Max: ");
-                controller.amountFiltredPaymentsList(minMount, maxMount);
+                List<Payment> paymentListAmounts = controller.amountFiltredPaymentsList(minMount, maxMount);
+                for(Payment p : paymentListAmounts){
+                    System.out.println("-------");
+                    System.out.println("payment amount: "+ p.getAmount());
+                    System.out.println("payment date: "+ p.getDate());
+                }
                 System.out.println("-----------------------------------");
             break;
             case 3:System.out.println("╠═════════════════║ Filter by Date ║═════════════════╣");
                 String inputDate = InputUtils.readString("Enter Date (dd/MM/yyyy): ");
-
+                sc.nextLine();
+                System.err.println(" befor paring");
                 Date date = DateUtils.parse(inputDate);
+                System.err.println("after parsing");
                 if (date != null) {
-                    controller.dateFiltredPaymentsList(date);
+                    List<Payment> datePaymentList = controller.dateFiltredPaymentsList(date);
+                    for(Payment p : datePaymentList){
+                        System.out.println("-------");
+                        System.out.println("payment amount: "+ p.getAmount());
+                        System.out.println("payment date: "+ p.getDate());
+                    }
                 }
 
                 break;
@@ -396,9 +444,30 @@ public class ManagerUi {
     }
 
     // 9- view payment per single agent in dp
-    void viewPaymentsPerAgent(){
+    void viewPaymentsPerAgent() {
+        System.out.println("╠═════════════════║Payment list per agent║═════════════════╣");
 
+        List<Agent> agents = controller.getAllAgent();
+        List<Payment> payments = controller.paymentList(); // كل الـPayments
+
+        for (Agent agent : agents) {
+            System.out.println("Agent: " + agent.getFirst_name() + " " + agent.getLast_name());
+
+            List<Payment> agentPayments = payments.stream()
+                    .filter(p -> p.getAgentId() == agent.getId())
+                    .toList();
+
+            if (agentPayments.isEmpty()) {
+                System.out.println("  No payments found.");
+            } else {
+                for (Payment pay : agentPayments) {
+                    System.out.println("  Amount: " + pay.getAmount() + ", Type: " + pay.getType() + ", Date: " + pay.getDate());
+                }
+            }
+            System.out.println("----------------------------");
+        }
     }
+
 
     // 10-stats
     void statistics(){

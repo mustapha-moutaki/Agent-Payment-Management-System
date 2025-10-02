@@ -13,6 +13,7 @@ import service.PaymentService;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 // how to create a controller that handle all services (busines logic of all models)
 public class MainController {
@@ -100,7 +101,9 @@ public class MainController {
     public Boolean removeAgentFromDepartment(int id){
         return agentService.removeAgentFromDepartment(id);
     }
-
+    public Map<Department, Double> getTotalPaymentsByDepartment(){
+        return  paymentService.getTotalPaymentsByDepartment();
+    }
 
     // 5- get departmnt by id
     // we must add a foregin key manager_id to department table in db

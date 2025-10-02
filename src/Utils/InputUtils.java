@@ -17,7 +17,7 @@ public class InputUtils {
             sc.next();
         }
         int value = sc.nextInt();
-        sc.nextLine();
+//        sc.nextLine();
         return value;
     }
 

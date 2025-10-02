@@ -4,6 +4,7 @@ import dao.AgentDAO;
 import dao.PaymentDAO;
 import dao.implments.PaymentDAOImpl;
 import model.Agent;
+import model.Department;
 import model.Payment;
 import model.enums.PaymentType;
 import service.PaymentService;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -64,20 +66,20 @@ public PaymentServiceImpl(PaymentDAO paymentDAO){
     public List<Payment> filterByType(String type) {
 
         return getAll().stream()
-                .filter(p -> p.getType().name().equals(type))
+                .filter(p -> p.getType().name().equalsIgnoreCase(type))
                 .collect(Collectors.toList());
 
     }
 
     @Override
     public List<Payment> filterByDate(Date date) {
-        // transfer java.utils.date to localDAte
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         return getAll().stream()
-                .filter(p -> p.getDate().equals(localDate))
+                .filter(p -> p.getDate().isEqual(localDate))
                 .collect(Collectors.toList());
     }
+
 
 
     @Override
@@ -109,6 +111,11 @@ public PaymentServiceImpl(PaymentDAO paymentDAO){
 
         // less than 6 paymets
         return false;
+    }
+
+
+    public Map<Department, Double> getTotalPaymentsByDepartment(){
+    return paymentDao.getTotalPaymentsByDepartment();
     }
 
 }

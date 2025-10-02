@@ -14,9 +14,10 @@ public class DateUtils {
 
     public static Date parse(String dateString){
         try{
+            sdf.setLenient(false);
             return sdf.parse(dateString);
         }catch(ParseException e){
-            System.out.println("==> invalid date format, pls try use "+ DEFAULT_PATTERN);
+            System.out.println("==> invalid date format, pls try use " + DEFAULT_PATTERN);
             return null;
         }
     }

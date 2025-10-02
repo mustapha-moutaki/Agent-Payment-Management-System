@@ -1,12 +1,15 @@
 package dao.implments;
 
 import dao.PaymentDAO;
+import model.Department;
 import model.Payment;
 import model.enums.PaymentType;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentDAOImpl implements PaymentDAO {
 
@@ -106,4 +109,31 @@ public class PaymentDAOImpl implements PaymentDAO {
             e.printStackTrace();
         }
     }
+
+
+    public Map<Department, Double> getTotalPaymentsByDepartment() {
+        Map<Department, Double> result = new HashMap<>();
+        String sql = "SELECT d.id_department, d.name, COALESCE(SUM(p.amount), 0) AS total_payments " +
+                "FROM department d " +
+                "LEFT JOIN agent a ON d.id_department = a.id_department " +
+                "LEFT JOIN payment p ON a.id_agent = p.id_agent " +
+                "GROUP BY d.id_department, d.name";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Department dept = new Department(
+                        rs.getInt("id_department"),
+                        rs.getString("name")
+                );
+                double total = rs.getDouble("total_payments");
+                result.put(dept, total);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
