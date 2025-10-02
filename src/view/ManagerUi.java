@@ -58,14 +58,6 @@ public class ManagerUi {
                     System.out.println("║                    Add Payment                     ║");
                     System.out.println("╠════════════════════════════════════════════════════╣");
 
-
-
-
-
-
-
-//                    System.out.println("Current agent: " + current.getFirst_name() + " - department id: " +
-//                            (current.getDepartment() != null ? current.getDepartment().getId_department() : "null"));
                     int managerDepartment_id = auth.getCurrentAgent().getDepartment().getId_department();
 
                     // filter agents
