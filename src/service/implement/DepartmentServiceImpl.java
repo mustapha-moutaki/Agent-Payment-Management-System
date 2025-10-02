@@ -70,23 +70,25 @@ public DepartmentServiceImpl(DepartmentDAO departmentDAO, AgentDAO agentDAO){
     }
 
     @Override
-    public void assignManagerToDepartment(Agent agent, Department department){
+    public Boolean assignManagerToDepartment(Agent agent, Department department){
 
         if (agent == null || department == null) {
             System.out.println("Agent or Department is null!");
-            return;
+            return false;
         }
         Agent agentIsExist = agentDAO.findById(agent.getId());
         if(agentIsExist == null){
             System.out.println("agent with id: "+agent.getId()+" is not exist");
-            return;
+            return false;
         }
         agentIsExist.setDepartment(department);
         agentDAO.updateAgent(agentIsExist);
-        System.out.println("Updating Agent ID: " + agentIsExist + " with Department ID: " + agent.getDepartment().getId_department());
+
 
         agentDAO.updateAgent(agent);
-
+        System.out.println("Updated Agent ID: " + agentIsExist.getId() +
+                " with Department ID: " + department.getId_department());
+            return true;
             }
 
 

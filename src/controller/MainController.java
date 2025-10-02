@@ -94,8 +94,11 @@ public class MainController {
         departmentService.findDepartmentById(id);
     }
 
-    public void assignManagerToDepartment(Agent agent, Department department){
-        departmentService.assignManagerToDepartment(agent, department);
+    public Boolean assignManagerToDepartment(Agent agent, Department department){
+        return departmentService.assignManagerToDepartment(agent, department);
+    }
+    public Boolean removeAgentFromDepartment(int id){
+        return agentService.removeAgentFromDepartment(id);
     }
 
 

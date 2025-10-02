@@ -79,11 +79,12 @@ public class ManagerUi {
                     if(!managerAgents.isEmpty()){
                         System.out.println("-----Your department agents list-----");
                         for (int i = 0; i < managerAgents.size(); i++) {
-                            System.out.println((i+1) + " > " + managerAgents.get(i).getFirst_name() + " - " + managerAgents.get(i).getLast_name());
+                            System.out.println((i+1) + " > " + managerAgents.get(i).getFirst_name() + " " + managerAgents.get(i).getLast_name()+"["+managerAgents.get(i).getAgent_type() + "]");
                         }
 
 
                         int uchoice = InputUtils.readInt("Enter the number of the agent-> ");
+                        InputUtils.readString("");
                         if(uchoice > 0 && uchoice <= managerAgents.size()){
                             int chosenAgent = managerAgents.get(uchoice - 1).getId();
 
@@ -128,10 +129,11 @@ public class ManagerUi {
                     }
 
                     for (int i = 0; i < managerAgents1.size(); i++) {
-                        System.out.println((i+1) + "> " + managerAgents1.get(i).getFirst_name() + " - " + managerAgents1.get(i).getLast_name());
+                        System.out.println((i+1) + "> " + managerAgents1.get(i).getFirst_name() + " " + managerAgents1.get(i).getLast_name()+ "[" +managerAgents1.get(i).getAgent_type() +"]");
                     }
 
                     int uchoice = InputUtils.readInt("Enter the number of the agent-> ");
+                    InputUtils.readString("");
                     if(uchoice <= 0 || uchoice > managerAgents1.size()){
                         System.out.println("Invalid choice, try again");
                         return;
@@ -216,16 +218,63 @@ public class ManagerUi {
                     if(deptChoice <= 0 || deptChoice > departments.size()){
                         System.out.println("Invalid choice");
                         return;
+                    }else{
+                        Department chosenDept = departments.get(deptChoice-1);
+
+
+                        chosenAgent1.setDepartment(chosenDept);
+                        Boolean isSuccess = addAgentToDepartment(chosenAgent1,chosenDept);
+                        if(isSuccess){
+                            System.out.println("Agent assigned to department successfully");
+                        }else{
+                            System.out.println("Error");
+                        }
                     }
 
-                    Department chosenDept = departments.get(deptChoice-1);
 
-                    // 5- تعيين القسم وحفظ التحديث
-                    chosenAgent1.setDepartment(chosenDept);
-                    addAgentToDepartment();
                 break;
-                case 4: removeAgentFromDepartment();
-                break;
+                case 4:
+                    System.out.println("\n----- Remove Agent From Department ---------");
+
+
+                    int managerDeptId = auth.getCurrentAgent().getDepartment().getId_department();
+
+
+                    List<Agent> managerAgents3 = controller.getAllAgent().stream()
+                            .filter(a -> a.getDepartment() != null &&
+                                    a.getDepartment().getId_department() == managerDeptId)
+                            .toList();
+
+                    if(managerAgents3.isEmpty()){
+                        System.out.println("No agents found in your department.");
+                        break;
+                    }
+
+
+                    System.out.println("-----Your Department Agents-----");
+                    for(int i = 0; i < managerAgents3.size(); i++){
+                        System.out.println((i+1) + " > " + managerAgents3.get(i).getFirst_name() + " " + managerAgents3.get(i).getLast_name());
+                    }
+
+
+                    int agentChoice1 = InputUtils.readInt("Select agent to remove: ");
+                    if(agentChoice1 <= 0 || agentChoice1 > managerAgents3.size()){
+                        System.out.println("Invalid choice");
+                        break;
+                    }
+
+                    Agent chosenAgent2 = managerAgents3.get(agentChoice1-1);
+
+                    System.out.println("agnt is removed id: "+ chosenAgent2.getId());
+                    boolean isRemoved = removeAgentFromDepartment(chosenAgent2.getId());
+
+                    if(isRemoved){
+                        System.out.println("Agent removed from department successfully.");
+                    } else {
+                        System.out.println("Failed to remove agent from department.");
+                    }
+                    break;
+
                 case 5: updateAgentInfoDepartment();
                 break;
                 case 6: viewDepartmentPayments();
@@ -256,13 +305,13 @@ public class ManagerUi {
 
 
     // 3- add agent to department
-    void addAgentToDepartment(){
-
+    Boolean  addAgentToDepartment(Agent agent, Department department){
+        return controller.assignManagerToDepartment(agent, department);
     }
 
     // 4- remove agent from my department
-    void removeAgentFromDepartment(){
-
+    Boolean removeAgentFromDepartment(int id){
+        return controller.removeAgentFromDepartment(id);
     }
 
     // 5- update agent info of my department

@@ -50,4 +50,15 @@ public class AgentServiceImpl implements AgentService {
     public List<Agent> findManagersByDepartmentId(int departmentId) {
         return agentDAO.findManagersByDepartmentId(departmentId);
     }
+
+    @Override
+    public Boolean removeAgentFromDepartment(int id) {
+        Agent agent = agentDAO.findById(id);
+        if(agent == null){
+            return false;
+        }
+            agent.setDepartment(null);
+             agentDAO.updateAgent(agent);
+            return true;
+    }
 }

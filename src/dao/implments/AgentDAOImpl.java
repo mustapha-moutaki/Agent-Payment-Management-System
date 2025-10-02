@@ -65,7 +65,12 @@ public class AgentDAOImpl implements AgentDAO {
             stmt.setString(4, agent.getPassword());
             stmt.setString(5, agent.getAgent_type().name());
 //            stmt.setInt(6, agent.getId_department());
-            stmt.setInt(6, agent.getDepartment() != null ? agent.getDepartment().getId_department() : 0);
+//            stmt.setInt(6, agent.getDepartment() != null ? agent.getDepartment().getId_department() : 0);
+            if(agent.getDepartment() != null){
+                stmt.setInt(6, agent.getDepartment().getId_department());
+            } else {
+                stmt.setNull(6, java.sql.Types.INTEGER);  // to set null not the 0
+            }
 
             stmt.setInt(7, agent.getId());
             stmt.executeUpdate();
@@ -124,15 +129,6 @@ public class AgentDAOImpl implements AgentDAO {
 //                            rs.getInt("id_department")
                     );
                     agent.setId(agentId);
-//                    agent = new Agent(
-//                            rs.getInt("id_agent"),
-//                            rs.getString("first_name"),
-//                            rs.getString("last_name"),
-//                            rs.getString("email"),
-//                            rs.getString("password"),
-//                            AgentType.valueOf(rs.getString("agent_type")),
-//                            department
-//                    );
 
                     // department
                     int depId = rs.getInt("dep_id");
@@ -193,7 +189,7 @@ public class AgentDAOImpl implements AgentDAO {
                     );
 
                     // department
-                    int depId = rs.getInt("dep_id");
+                    int depId = rs.getInt("id_department");
                     String depName = rs.getString("department_name");
                     if(depId != 0){
                         agent.setDepartment(new Department(depId, depName));

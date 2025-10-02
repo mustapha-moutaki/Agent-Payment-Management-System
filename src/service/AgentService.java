@@ -39,4 +39,6 @@ public interface AgentService {
     Agent findAgentByEmail(String email);
 
     public List<Agent> findManagersByDepartmentId(int departmentId);
+
+    public Boolean removeAgentFromDepartment(int id);
 }

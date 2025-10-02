@@ -15,6 +15,6 @@ public interface DepartmentService {
 
     // new update
     void assignAgentToDepartment(Agent agent, Department department);
-    void assignManagerToDepartment(Agent agent, Department department);
+    Boolean assignManagerToDepartment(Agent agent, Department department);
     void getDepartmentsStatistics();
 }

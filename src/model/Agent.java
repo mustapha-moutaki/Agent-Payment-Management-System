@@ -10,7 +10,7 @@ public class Agent extends Person{
 //    private double salary;
     private int id;
     private int id_department;
-    private Department department;
+    private Department department; // to set null to id_department and avoid 0
     private List<Payment> paymentsList;// agent payments list to store only payments of single agent
 
     public Agent(String first_name, String last_name, String email, String password, AgentType type){
@@ -47,9 +47,9 @@ public class Agent extends Person{
         return id_department;
     }
 
-    public void setId_department(int id_department) {
-        this.id_department = id_department;
-    }
+        public void setId_department(int id_department) {
+            this.id_department = id_department;
+        }
 
 
 //    public double getSalary() {
