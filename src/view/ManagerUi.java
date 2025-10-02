@@ -18,11 +18,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ManagerUi {
     private MainController controller;
     private AuthentificationService auth;
     Scanner sc = new Scanner(System.in);
+
 
     public ManagerUi(MainController controller, AuthentificationService auth){
         this.controller = controller;
@@ -30,6 +32,7 @@ public class ManagerUi {
     }
 
     public void managerMenu(Agent manager){
+        Agent current = auth.getCurrentAgent();
         int choice;
         do {
             System.out.println("\n╔════════════════════════════════════════════════════════╗");
@@ -42,12 +45,8 @@ public class ManagerUi {
             System.out.println("║ 5️⃣  Update Agent Info in your Department                 ║");// not yet
             System.out.println("║ 6️⃣  View Department Payments                             ║");
             System.out.println("║ 7️⃣  Filter Payments by Type / Date- / Amount             ║");
-            System.out.println("║ 8️⃣  View Payments per Agent in the Department            ║");// done
-            System.out.println("║ 9️⃣  View Statistics for Department                       ║"); // notyet
-            System.out.println("║    - Total payments per agent                            ║");
-            System.out.println("║    - Total payments for the department                   ║");// include in the n: 6
-            System.out.println("║    - Average payments per agent                          ║");
-            System.out.println("║    - Rank agents by total payments                       ║");
+            System.out.println("║ 8️⃣  View Payments per Agent                              ║");
+            System.out.println("║ 9️⃣  View Statistics for Department                       ║");
             System.out.println("║ 0️⃣  Logout                                               ║");
             System.out.println("╚══════════════════════════════════════════════════════════╝");
 
@@ -64,7 +63,7 @@ public class ManagerUi {
 
 
 
-                    Agent current = auth.getCurrentAgent();
+
 //                    System.out.println("Current agent: " + current.getFirst_name() + " - department id: " +
 //                            (current.getDepartment() != null ? current.getDepartment().getId_department() : "null"));
                     int managerDepartment_id = auth.getCurrentAgent().getDepartment().getId_department();
@@ -285,7 +284,7 @@ public class ManagerUi {
                 break;
                 case 7: filterPayments();// done
                 break;
-                case 8: viewPaymentsPerAgent();
+                case 8: viewPaymentsPerAgent();//done
                 break;
                 case 9: statistics();
                 break;
@@ -329,13 +328,13 @@ public class ManagerUi {
         System.out.println("════════════════════════════════════════════════════════");
 
        Map<Department, Double> departmentPaymentList =  controller.getTotalPaymentsByDepartment();
-        System.out.println("--------------------");
+        System.out.println("--------------------------------------");
        for(Map.Entry<Department, Double> entry : departmentPaymentList.entrySet()){
         Department depar = entry.getKey();
         Double total = entry.getValue();
            System.out.println("Department      |" + depar.getName());
            System.out.println("total Payments: |"+total);
-           System.out.println("--------------------");
+           System.out.println("--------------------------------------");
        }
     }
 
@@ -470,8 +469,67 @@ public class ManagerUi {
 
 
     // 10-stats
-    void statistics(){
+    void statistics() {
+        System.out.println("╠═════════════════║ Statistics ║═════════════════╣");
+        System.out.println("Enter your choice ");
+        System.out.println("1 - total payment per department");
+        System.out.println("2 - average payments per agent");
+        int ichoice = InputUtils.readInt("enter: ");
+        switch (ichoice) {
+            case 1:
+                viewDepartmentPayments();
+                break;
+            case 2:
+                System.out.println("╠═════════════════║ Statistics ║═════════════════╣");
+                System.out.println("Enter your choice ");
+                System.out.println("1 - Total payment per department");
+                System.out.println("2 - Average payments per agent");
+                int ichoice1 = InputUtils.readInt("Enter: ");
+
+                Agent current = auth.getCurrentAgent();
+                int managerDeptId = current.getDepartment().getId_department();
+
+                switch (ichoice1) {
+                    case 1:
+                        viewDepartmentPayments();
+                        break;
+
+                    case 2:
+                        List<Agent> agentList = controller.getAllAgent();
+                        List<Payment> payments = controller.paymentList();
+
+                        System.out.println("╠═════════════════║ Average payments per agent ║═════════════════╣");
+
+                        for (Agent agent : agentList) {
+                            // get all agent in the manager department
+                            if (agent.getDepartment() != null && agent.getDepartment().getId_department() == managerDeptId) {
+                                double sum = 0;
+                                int count = 0;
+
+
+                                for (Payment p : payments) {
+                                    if (p.getAgentId() == agent.getId()) {
+                                        sum += p.getAmount();
+                                        count++;
+                                    }
+                                }
+
+                                double avg = 0;
+                                if (count > 0) {
+                                    avg = sum / count;
+                                }
+
+                                System.out.println("Agent: " + agent.getFirst_name() + " " + agent.getLast_name() +
+                                        " | Average Payment: " + avg);
+                            }
+                        }
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice");
+                }
+
+        }
 
     }
-
 }
