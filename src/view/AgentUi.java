@@ -37,6 +37,7 @@ public class AgentUi {
 
             choice = InputUtils.readInt("Enter your choice: ");
 
+
             switch (choice) {
                 case 1 -> showPersonalInfo(currentAgent);
                 case 2 -> viewPayments(currentAgent);
