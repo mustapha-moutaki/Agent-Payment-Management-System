@@ -6,6 +6,7 @@ import model.Agent;
 import model.Department;
 import model.Payment;
 import model.enums.AgentType;
+import org.w3c.dom.ls.LSOutput;
 import security.AuthentificationService;
 import service.AgentService;
 import service.DepartmentService;
@@ -35,16 +36,16 @@ public class DirectorUi {
             System.out.println("\n╔════════════════════════════════════════════════════════╗");
             System.out.println("║                     Director Menu                       ║");
             System.out.println("╠════════════════════════════════════════════════════════╣");
-            System.out.println("║ 1️⃣  Create Department                                   ║");// done
-            System.out.println("║ 2️⃣  Update Department                                   ║"); // done
-            System.out.println("║ 3️⃣  Delete Department                                   ║"); // done
-            System.out.println("║ 4️⃣  Assign Manager to Department        (beta)          ║"); // Not work id not exist
-            System.out.println("║ 5️⃣  Add or Update Agent across Departments (beta)       ║"); // not yet
-            System.out.println("║ 6️⃣  View All Departments                                ║"); // done with test
-            System.out.println("║ 7️⃣  View All Agents                                     ║"); // done with test
-            System.out.println("║ 8️⃣  View All Payments                                   ║");//  - Filter by Department, Agent, Type, Amount, Date
+            System.out.println("║ 1️⃣  Create Department                                   ║");
+            System.out.println("║ 2️⃣  Update Department                                   ║");
+            System.out.println("║ 3️⃣  Delete Department                                   ║");
+            System.out.println("║ 4️⃣  Assign Manager to Department                        ║");
+            System.out.println("║ 5️⃣  Add or Update Agent across Departments (beta)       ║");
+            System.out.println("║ 6️⃣  View All Departments                                ║");
+            System.out.println("║ 7️⃣  View All Agents                                     ║");
+            System.out.println("║ 8️⃣  View All Payments                                   ║");//- Filter by Department, Agent, Type, Amount, Date
             System.out.println("║ 9️⃣  View Company-wide Statistics  (not yet)             ║");
-            System.out.println("║ 0️⃣  Logout                                              ║"); // done
+            System.out.println("║ 0️⃣  Logout                                              ║");
             System.out.println("╚════════════════════════════════════════════════════════╝");
             choice = InputUtils.readInt("Enter your choice: ");
 
@@ -52,23 +53,23 @@ public class DirectorUi {
 //        while(!exit){
 //            do{
                 switch (choice){
-                    case 1: createDepartment();// done ready for test
+                    case 1: createDepartment();
                         break;
-                    case 2: updateDepartment();// done ready for test
+                    case 2: updateDepartment();
                         break;
-                    case 3: deleteDepartment();// done ready for test
+                    case 3: deleteDepartment();
                         break;
-                    case 4: assignManagerToDepartment();// done ready for test
+                    case 4: assignManagerToDepartment();
                         break;
                     case 5: AddorUpdateAgentacrossDepartments();// no yet add agent to anydepartment and edits it's data
                         break;
-                    case 6: displayAllDepartments();// done ready for test
+                    case 6: displayAllDepartments();
                         break;
-                    case 7: displayAllAgents();// ready fro test
+                    case 7: displayAllAgents();
                         break;
-                    case 8: displayAllPayments();// done ready for test
+                    case 8: displayAllPayments();
                         break;
-                    case 9: ViewCompanyWideStatistics();// not yet
+                    case 9: ViewCompanyWideStatistics();
                         break;
                     case 0:
                         System.out.println("Exiting ...");
@@ -244,70 +245,6 @@ public class DirectorUi {
     }
 
 
-//    public void assignManagerToDepartment() {
-//        List<Agent> agents = controller.getAllAgent();
-//
-//        // getting all managers
-//        List<Agent> managers = agents.stream()
-//                .filter(a -> a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT)
-//                .toList();
-//
-//        if (managers.isEmpty()) {
-//            System.out.println("No manager available ");
-//            return;
-//        }
-//
-//        // display managers list
-//        for (int i = 0; i < managers.size(); i++) {
-//            System.out.println((i + 1) + "- " + managers.get(i).getFirst_name() + " " + managers.get(i).getLast_name());
-//        }
-//
-//        int choice = InputUtils.readInt("chose the manager: ");
-//        if (choice > 0 && choice <= managers.size()) {
-//            Agent chosenManager = managers.get(choice - 1);
-//
-//            List<Department> departments = controller.DepartmentList();
-//            if (departments.isEmpty()) {
-//                System.out.println("No departments found ");
-//                return;
-//            }
-//
-//            // display departments list
-//            for (int i = 0; i < departments.size(); i++) {
-//                System.out.println((i + 1) + "- " + departments.get(i).getName());
-//            }
-//
-//            int chosenDepa = InputUtils.readInt("chose department: ");
-//            if (chosenDepa > 0 && chosenDepa <= departments.size()) {
-//                Department chosenDepartment = departments.get(chosenDepa - 1);
-//
-//                // chcek if the department has already manager
-//                boolean hasManager = agents.stream()
-//                        .anyMatch(a -> a.getDepartment() != null
-//                                && a.getDepartment().getId() == chosenDepartment.getId()
-//                                && a.getAgent_type() == AgentType.RESPONSABLE_DEPARTEMENT);
-//
-//                if (hasManager) {
-//                    System.out.println("==>department " + chosenDepartment.getName()+chosenDepartment.getId_department() + " has aleady manager!");
-//                    return;
-//                }
-//
-//                Agent agentInDb = controller.getAgentById(chosenManager.getId());
-//                if (agentInDb == null) {
-//                    System.out.println("Agent with id: " + chosenManager.getId() + " does not exist in DB");
-//                    return;
-//                }
-//// assgin manager to department (use the one from DB)
-//                controller.assignManagerToDepartment(agentInDb, chosenDepartment);
-//                System.out.println("Manager " + agentInDb.getFirst_name() + " assigned to department: " + chosenDepartment.getName());
-//
-//                // assgin manager to department
-////                controller.assignManagerToDepartment(chosenManager, chosenDepartment);
-////                System.out.println("manger " + chosenManager.getFirst_name() + " assigned to department:  " + chosenDepartment.getName());
-//            }
-//        }
-//    }
-
     // 5- addAgentToDepartment
     public void addAgentToDepartment(){
 
@@ -375,9 +312,69 @@ public class DirectorUi {
 
     // 9- ViewCompany-wideStatistics()
     public void ViewCompanyWideStatistics(){
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println("║             Statistics           ║");
+        System.out.println("╚══════════════════════════════════╝");
+        System.out.println("║ 1- Total Payments of company     ║");
+        System.out.println("║ 2- Number of Agents              ║");
+        System.out.println("║ 3- Top earner                    ║");
+        System.out.println("║ 4- Number of Departments         ║");
+        System.out.println("╚══════════════════════════════════╝");
+        int choice = InputUtils.readInt("Enter: ");
+        switch ((choice)){
+            case 1:
+                System.out.println(totalPaymentsOfCompany() + " MAD");
+            break;
+            case 2:
+                System.out.println(totalAgents() +" Agents");
+            break;
+            case 3: topEarnr();
+            break;
+            case 4:
+                System.out.println(totalDepartment() + " department");
+            case 0: System.exit(0);
+            default:
+                System.err.println("Invalid choice, try again");
+        }
+
 
     }
+     Double totalPaymentsOfCompany(){
+        return  controller.paymentList().stream().mapToDouble(p -> p.getAmount()).sum();
+    }
+    int totalAgents(){
+        return controller.getAllAgent().size();
+    }
+    void topEarnr(){
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println("║             Top Earner           ║");
+        System.out.println("╚══════════════════════════════════╝");
+        List<Agent>agentList = controller.getAllAgent();
+        List<Payment>paymentList = controller.paymentList();
+       double max = 0.0;
+       Agent topAgnt = null;
+        for(Agent agent : agentList){
+            Double totalAmount = 0.0;
+           for(Payment payment: paymentList){
+               if(agent.getId() == payment.getAgentId()){
+                   totalAmount += payment.getAmount();
+               }
+           }
+           if(totalAmount > max){
+               max =  totalAmount;
+               topAgnt = agent;
+           }
 
+        }
+        System.out.println("Top agent: "+ topAgnt.getFirst_name()+" "+topAgnt.getLast_name());
+        System.out.println("amount: "+ max +" MAD");
+    }
+    int totalDepartment(){
+        System.out.println("\n╔══════════════════════════════════╗");
+        System.out.println("║    Total Department of company   ║");
+        System.out.println("╚══════════════════════════════════╝");
+        return controller.DepartmentList().size();
+    }
 
 
 
