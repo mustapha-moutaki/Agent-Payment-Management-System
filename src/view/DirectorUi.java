@@ -44,7 +44,7 @@ public class DirectorUi {
             System.out.println("║ 6️⃣  View All Departments                                ║");
             System.out.println("║ 7️⃣  View All Agents                                     ║");
             System.out.println("║ 8️⃣  View All Payments                                   ║");//- Filter by Department, Agent, Type, Amount, Date
-            System.out.println("║ 9️⃣  View Company-wide Statistics  (not yet)             ║");
+            System.out.println("║ 9️⃣  View Company-wide Statistics                        ║");
             System.out.println("║ 0️⃣  Logout                                              ║");
             System.out.println("╚════════════════════════════════════════════════════════╝");
             choice = InputUtils.readInt("Enter your choice: ");

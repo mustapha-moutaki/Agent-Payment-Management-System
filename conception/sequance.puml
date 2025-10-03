@@ -1,0 +1,45 @@
+@startuml
+
+' Define the actors and systems
+actor Manager
+participant PaymentController
+participant PaymentService
+participant Agent
+
+' Start: Manager wants to add money
+Manager -> PaymentController: addMoney
+
+' Check payment validation
+PaymentController -> PaymentService: validatePayment
+
+' Scenario 1: For Salary or Prime payments
+alt Salary or Prime Payment
+
+    ' Manager creates payment for employee
+    PaymentService -> Agent: Create payment
+    Agent --> PaymentService: assigned payment
+    PaymentService --> Agent: payment added
+
+    ' Confirm payment is valid
+    PaymentService --> PaymentController: payment valid
+    PaymentController --> Manager: payment added successfully
+
+else Bonus Payment
+
+    ' Check who is receiving the bonus
+    alt Manager/Director receives bonus
+        PaymentService -> Agent: Create payment
+        Agent --> PaymentService: assigned payment
+        PaymentService --> Agent: payment added
+        PaymentController --> Manager: payment added successfully
+
+    else Agent/Intern receives bonus
+        ' Bonus refused for Agent/Intern
+        Agent -> PaymentService: Refuse payment
+        PaymentService --> Agent: Refuse payment
+        PaymentController --> Manager: payment refused
+    end
+
+end
+
+@enduml
